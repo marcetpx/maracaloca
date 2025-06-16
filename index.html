@@ -219,6 +219,75 @@
                 max-width: 100%;
             }
         }
+
+
+
+
+
+
+        .filtros {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filtros button {
+            background-color: #ffff00;
+            border: none;
+            padding: 10px 20px;
+            font-family: Menlo, Consolas, monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .filtros button:hover {
+            transform: scale(1.05);
+        }
+
+        .item {
+            display: block;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .item.hidden {
+            display: none;
+        }
+
+
+        .filtros button {
+            background-color: transparent;
+            border: 2px solid #ffff00;
+            padding: 10px 20px;
+            font-family: 'Menlo', Consolas, monospace;
+            font-size: 1.2rem;
+            color: #000;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+
+            /* Efecto irregular tipo salpicadura */
+            filter: contrast(1.2) brightness(0.95);
+            text-shadow:
+                1px -1px 0 rgba(255, 255, 0, 0.15),
+                -1px 1px 0 rgba(255, 255, 0, 0.1),
+                0 0 2px rgba(255, 255, 0, 0.05),
+                2px 2px 0 rgba(255, 255, 0, 0.15),
+                -2px -2px 0 rgba(255, 255, 0, 0.1);
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 0, 0.1) 0.5px, transparent 1px),
+                radial-gradient(circle at 70% 80%, rgba(255, 255, 0, 0.07) 0.6px, transparent 1px),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 0, 0.05) 0.8px, transparent 1.2px);
+            background-repeat: repeat;
+            background-size: 10px 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .filtros button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 8px rgba(255, 255, 0, 0.4);
+        }
     </style>
 </head>
 
@@ -230,41 +299,47 @@
 
     <div class="capa-blanca" id="capaBlanca">
         <h1></h1>
+        <div class="filtros">
+            <button data-filtro="todos">Todos</button>
+            <button data-filtro="director">Director</button>
+            <button data-filtro="productor">Productor</button>
+            <button data-filtro="camara">Cámara</button>
+        </div>
         <div class="mosaico">
-            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-line1="LA VISUAL"
-                data-line2="PRODUCCION EJECUTIVA">
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="https://picsum.photos/640/360?grayscale&1" alt="Imagen 1" />
             </div>
-            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-line1="LA VISUAL"
-                data-line2="PRODUCCION EJECUTIVA">
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="productor"
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="https://picsum.photos/640/360?grayscale&2" alt="Imagen 2" />
             </div>
-            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-line1="LA VISUAL"
-                data-line2="PRODUCCION EJECUTIVA">
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="https://picsum.photos/640/360?grayscale&3" alt="Imagen 3" />
             </div>
-            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-line1="LA VISUAL"
-                data-line2="PRODUCCION EJECUTIVA">
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="https://picsum.photos/640/360?grayscale&4" alt="Imagen 4" />
             </div>
-            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-line1="LA VISUAL"
-                data-line2="PRODUCCION EJECUTIVA">
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="https://picsum.photos/640/360?grayscale&5" alt="Imagen 5" />
             </div>
-            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-line1="LA VISUAL"
-                data-line2="PRODUCCION EJECUTIVA">
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="https://picsum.photos/640/360?grayscale&6" alt="Imagen 6" />
             </div>
-            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-line1="LA VISUAL"
-                data-line2="PRODUCCION EJECUTIVA">
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="productor"
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="https://picsum.photos/640/360?grayscale&7" alt="Imagen 7" />
             </div>
-            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-line1="LA VISUAL"
-                data-line2="PRODUCCION EJECUTIVA">
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="https://picsum.photos/640/360?grayscale&8" alt="Imagen 8" />
             </div>
-            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-line1="LA VISUAL"
-                data-line2="PRODUCCION EJECUTIVA">
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="https://picsum.photos/640/360?grayscale&9" alt="Imagen 9" />
             </div>
 
@@ -372,6 +447,25 @@
                 if (e.key === 'Escape' && modal.classList.contains('active')) {
                     closeModal();
                 }
+            });
+
+            // Filtro por categoría
+            const botonesFiltro = document.querySelectorAll('.filtros button');
+            const items = document.querySelectorAll('.mosaico .item');
+
+            botonesFiltro.forEach(boton => {
+                boton.addEventListener('click', () => {
+                    const filtro = boton.getAttribute('data-filtro');
+
+                    items.forEach(item => {
+                        const categoria = item.getAttribute('data-categoria');
+                        if (filtro === 'todos' || categoria === filtro) {
+                            item.classList.remove('hidden');
+                        } else {
+                            item.classList.add('hidden');
+                        }
+                    });
+                });
             });
         });
     </script>
