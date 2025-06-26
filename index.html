@@ -242,8 +242,81 @@
             }
         }
 
+        @media (max-width: 700px) {
+            .capa-texto h2 {
+                font-size: 2.2rem;
+                /* o ajusta hasta que quepa en una sola línea */
+                letter-spacing: 0.2rem;
+            }
+        }
+
+
         .capa-texto.hidden {
             visibility: hidden;
+        }
+
+        .about-overlay {
+            display: flex;
+            justify-content: flex-start;
+            padding: 100px 60px;
+            position: absolute;
+            /* <-- cambia de relative a absolute */
+            z-index: 8;
+            background-color: transparent;
+            width: 100%;
+            background-color: #000;
+
+        }
+
+        .about-content {
+            max-width: 460px;
+            color: #ffff00;
+            /* Amarillo flúor */
+            text-shadow:
+                0 0 5px #ffff00,
+                0 0 20px #ffff00,
+                0 0 40px #ffff00;
+            font-family: Menlo, Consolas, 'Courier New', monospace;
+            text-align: left;
+            /* padding: 50px;
+            margin-left: -40px; */
+            padding-bottom: 100px;
+        }
+
+
+        .about-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-family: Menlo, Consolas, 'Courier New', monospace;
+
+        }
+
+        .about-content p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            font-family: Menlo, Consolas, 'Courier New', monospace;
+
+        }
+
+        .waves {
+            width: 100%;
+            height: 5%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background-image: url('images/lines.gif');
+
+        }
+
+        body {
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE y Edge */
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari y Opera */
         }
     </style>
 
@@ -303,6 +376,26 @@
         </div>
     </div>
 
+    <div class="about-overlay">
+        <div class="about-content">
+            <div class="waves"></div>
+            <h2>About Me</h2>
+            <p>Maracaloca es una proyecto audiovisual centrado en la creatividad, la imagen y el ritmo. Este
+                espacio
+                es una muestra de mi trabajo.</p>
+            <br>
+            <br>
+            <br>
+            <h2>Contact</h2>
+            <p>+34 123 456 789</p>
+            <p>#Adress: Radial, 27</p>
+            <p>#08001 Barcelona</p>
+            <div class="waves"></div>
+        </div>
+
+    </div>
+
+
     <div class="modal" id="modal">
         <div class="modal-content">
             <button class="close-btn">&times;</button>
@@ -320,11 +413,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             const capa = document.getElementById('capaBlanca');
             const texto = document.getElementById('capaTexto').querySelector('h2');
+            const aboutOverlay = document.querySelector('.about-overlay');
+            const botonesFiltro = document.querySelectorAll('.filtros button');
+            const items = document.querySelectorAll('.mosaico .item');
 
             const initialTop = 1200;
-            const minTop = -1200;
-            const maxScroll = initialTop - minTop;
-
+            let maxScroll = 2000; // se actualizará dinámicamente
             let targetScroll = 0;
             let currentScroll = 0;
             const ease = 0.1;
@@ -337,11 +431,36 @@
                 texto.style.transform = `translateY(${translateY}px)`;
             }
 
+            function updateAboutOverlayPosition() {
+                const aboutOffset = initialTop + capa.offsetHeight;
+                aboutOverlay.style.top = `${aboutOffset - currentScroll}px`;
+            }
+
+            function updateMaxScroll() {
+                const capaHeight = capa.offsetHeight;
+                const aboutHeight = aboutOverlay.offsetHeight;
+                const extraMargin = 100;
+
+                const totalContentHeight = initialTop + capaHeight + aboutHeight + extraMargin;
+                const viewportHeight = window.innerHeight;
+
+                maxScroll = Math.max(0, totalContentHeight - viewportHeight);
+
+                // Corrige el targetScroll si está fuera de límites
+                if (targetScroll > maxScroll) {
+                    targetScroll = maxScroll;
+                }
+            }
+
             function smoothScroll() {
                 currentScroll += (targetScroll - currentScroll) * ease;
                 currentScroll = Math.min(Math.max(currentScroll, 0), maxScroll);
+
                 capa.style.top = `${initialTop - currentScroll}px`;
+
                 updateTextEffect(currentScroll);
+                updateAboutOverlayPosition();
+
                 requestAnimationFrame(smoothScroll);
             }
 
@@ -372,7 +491,28 @@
             window.addEventListener('wheel', onWheel, { passive: false });
             capa.addEventListener('wheel', onWheel, { passive: false });
 
-            smoothScroll();
+            window.addEventListener('resize', () => {
+                updateMaxScroll();
+            });
+
+            botonesFiltro.forEach(boton => {
+                boton.addEventListener('click', () => {
+                    const filtro = boton.getAttribute('data-filtro');
+                    items.forEach(item => {
+                        const categoria = item.getAttribute('data-categoria');
+                        if (filtro === 'todos' || categoria === filtro) {
+                            item.classList.remove('hidden');
+                        } else {
+                            item.classList.add('hidden');
+                        }
+                    });
+
+                    // Espera a que se rendericen los cambios antes de calcular altura
+                    setTimeout(() => {
+                        updateMaxScroll();
+                    }, 50);
+                });
+            });
 
             // Modal logic
             const modal = document.getElementById('modal');
@@ -416,24 +556,13 @@
                 }
             });
 
-            const botonesFiltro = document.querySelectorAll('.filtros button');
-            const items = document.querySelectorAll('.mosaico .item');
-
-            botonesFiltro.forEach(boton => {
-                boton.addEventListener('click', () => {
-                    const filtro = boton.getAttribute('data-filtro');
-                    items.forEach(item => {
-                        const categoria = item.getAttribute('data-categoria');
-                        if (filtro === 'todos' || categoria === filtro) {
-                            item.classList.remove('hidden');
-                        } else {
-                            item.classList.add('hidden');
-                        }
-                    });
-                });
-            });
+            updateMaxScroll();
+            smoothScroll();
         });
     </script>
+
+
+
 </body>
 
 </html>
