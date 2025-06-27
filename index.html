@@ -7,6 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet" />
     <title>Maracaloca</title>
     <style>
+        @font-face {
+            font-family: 'Avalon';
+            src: url('fonts/Avalon.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+
         * {
             margin: 0;
             padding: 0;
@@ -16,7 +24,7 @@
         html,
         body {
             height: 100%;
-            font-family: Menlo, Consolas, 'Courier New', monospace;
+            font-family: Avalon, Consolas, 'Courier New', monospace;
             overflow-x: hidden;
         }
 
@@ -74,11 +82,12 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.3s ease;
+            filter: grayscale(100%);
+            transition: filter 0.4s ease;
         }
 
         .item:hover img {
-            transform: scale(1.05);
+            filter: grayscale(0%);
         }
 
         .item.hidden {
@@ -102,17 +111,17 @@
         .capa-texto h2 {
             font-size: 5rem;
             font-weight: bold;
-            color: #ffff00;
+            color: whitesmoke;
             /* Amarillo flúor */
             /*     text-shadow:
-                0 0 5px #ffff00,
-                0 0 10px #ffff00,
-                0 0 20px #ffff00,
-                0 0 40px #ffff00; */
+                0 0 5px whitesmoke,
+                0 0 10px whitesmoke,
+                0 0 20px whitesmoke,
+                0 0 40px whitesmoke; */
             opacity: 1;
             transform: translateY(0);
             transition: opacity 0.2s, transform 0.2s;
-            font-family: Menlo, Consolas, 'Courier New', monospace;
+            font-family: Avalon, Consolas, 'Courier New', monospace;
         }
 
         .filtros {
@@ -123,28 +132,46 @@
             justify-content: center;
         }
 
-        .filtros button {
-            background-color: black;
-            /*             border: 2px solid #ffff00; */
-            padding: 10px 20px;
-            font-family: 'Menlo', Consolas, monospace;
+        /*         .filtros button {
+            all: unset;
+            font-family: 'Avalon', Consolas, monospace;
             font-size: 1.2rem;
-            color: #ffff00;
-            /* Amarillo flúor */
-            /*   text-shadow:
-                0 0 5px #ffff00,
-                0 0 10px #ffff00,
-                0 0 20px #ffff00,
-                0 0 40px #ffff00; */
-
+            color: black;
             cursor: pointer;
+        } 
+*/
 
+        .filtros button {
+            all: unset;
+            font-family: 'Avalon', Consolas, monospace;
+            font-size: 1.2rem;
+            color: black;
+            cursor: pointer;
+            position: relative;
+            padding-bottom: 4px;
+            /* espacio para la línea */
+            transition: color 0.3s ease;
         }
 
-        .filtros button:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 8px rgba(255, 255, 0, 0.4);
+        .filtros button::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            height: 2px;
+            width: calc(100% + 2px);
+            background-color: black;
+            transform: translateX(-50%) scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease;
         }
+
+        .filtros button.activo::after {
+            width: 100%;
+            transform: translateX(-50%) scaleX(1);
+        }
+
+
 
         .modal {
             position: fixed;
@@ -172,7 +199,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            border: 3px solid #ffff00;
+            border: 3px solid whitesmoke;
             box-sizing: border-box;
             position: relative;
             z-index: 1010;
@@ -196,7 +223,7 @@
 
         .modal-text {
             padding: 15px 20px;
-            color: #ffff00;
+            color: whitesmoke;
             background: #222;
         }
 
@@ -212,7 +239,7 @@
             background: transparent;
             border: none;
             font-size: 2rem;
-            color: #ffff00;
+            color: whitesmoke;
             cursor: pointer;
             font-family: monospace;
             z-index: 1020;
@@ -266,13 +293,13 @@
 
         .about-content {
             max-width: 460px;
-            color: #ffff00;
+            color: whitesmoke;
             /* Amarillo flúor */
             /*  text-shadow:
-                0 0 5px #ffff00,
-                0 0 20px #ffff00,
-                0 0 40px #ffff00; */
-            font-family: Menlo, Consolas, 'Courier New', monospace;
+                0 0 5px whitesmoke,
+                0 0 20px whitesmoke,
+                0 0 40px whitesmoke; */
+            font-family: Avalon, Consolas, 'Courier New', monospace;
             text-align: left;
             /* padding: 50px;
             margin-left: -40px; */
@@ -283,25 +310,25 @@
         .about-content h2 {
             font-size: 2.5rem;
             margin-bottom: 15px;
-            font-family: Menlo, Consolas, 'Courier New', monospace;
+            font-family: Avalon, Consolas, 'Courier New', monospace;
 
         }
 
         .about-content p {
             font-size: 1.2rem;
             line-height: 1.6;
-            font-family: Menlo, Consolas, 'Courier New', monospace;
+            font-family: Avalon, Consolas, 'Courier New', monospace;
 
         }
 
-        .waves {
+        /*         .waves {
             width: 100%;
             height: 5%;
             margin-top: 20px;
             margin-bottom: 20px;
             background-image: url('images/lines.gif');
 
-        }
+        } */
 
         body {
             scrollbar-width: none;
@@ -316,82 +343,138 @@
         }
 
         .telefono {
-            color: #ffff00 !important;
+            color: whitesmoke !important;
             text-decoration: none !important;
             -webkit-tap-highlight-color: transparent;
             /* para eliminar highlight al tocar */
             cursor: pointer;
-            font-family: Menlo, Consolas, 'Courier New', monospace;
+            font-family: Avalon, Consolas, 'Courier New', monospace;
         }
 
         /* Para iOS evitar el estilo de detección automática */
         a[href^="tel:"] {
-            color: #ffff00 !important;
+            color: whitesmoke !important;
             text-decoration: none !important;
-            -webkit-text-fill-color: #ffff00 !important;
+            -webkit-text-fill-color: whitesmoke !important;
             /* fuerza color en iOS Safari */
         }
+
+
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            pointer-events: none;
+            background-image:
+                repeating-linear-gradient(to bottom,
+                    rgba(255, 255, 255, 0.15),
+                    rgba(255, 255, 255, 0.15) 2px,
+                    rgba(0, 0, 0, 0.15) 2px,
+                    rgba(0, 0, 0, 0.15) 4px),
+                repeating-linear-gradient(to right,
+                    rgba(255, 255, 255, 0.03),
+                    rgba(255, 255, 255, 0.03) 1px,
+                    transparent 1px,
+                    transparent 2px);
+            animation: flicker 1s infinite;
+            mix-blend-mode: screen;
+            filter: brightness(1.3) contrast(1.5);
+            opacity: 0.5;
+        }
+
+        /* Animación flicker más rápida y con variación de opacidad */
+        /* @keyframes flicker {
+
+            0%,
+            100% {
+                opacity: 0.6;
+            }
+
+            25% {
+                opacity: 0.7;
+            }
+
+            50% {
+                opacity: 0.55;
+            }
+
+            75% {
+                opacity: 0.65;
+            }
+        }*/
+
+        /* Footer fijo abajo */
     </style>
 
 </head>
 
 <body>
+    a
     <div class="capa-texto" id="capaTexto">
-        <h2>M A R A C A L O C A</h2>
+        <h2>VICTOR PALOMO</h2>a
     </div>
 
     <div class="capa-blanca" id="capaBlanca">
-        <div class="waves"></div>
         <div class="filtros">
-            <button data-filtro="todos">TODOS</button>
+            <button data-filtro="todos" class="activo">ALL</button>
             <button data-filtro="director">DIRECTOR</button>
-            <button data-filtro="productor">PRODUCTOR</button>
-            <button data-filtro="camara">CÁMARA</button>
+            <button data-filtro="productor">FILMMAKER</button>
         </div>
         <div class="mosaico">
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&1" alt="Imagen 1" />
+                <img src="https://picsum.photos/640/360?&1" alt="Imagen 1" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="productor"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&2" alt="Imagen 2" />
+                <img src="https://picsum.photos/640/360?&2" alt="Imagen 2" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&3" alt="Imagen 3" />
+                <img src="https://picsum.photos/640/360?&3" alt="Imagen 3" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&4" alt="Imagen 4" />
+                <img src="https://picsum.photos/640/360?&4" alt="Imagen 4" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&5" alt="Imagen 5" />
+                <img src="https://picsum.photos/640/360?&5" alt="Imagen 5" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&6" alt="Imagen 6" />
+                <img src="https://picsum.photos/640/360?&6" alt="Imagen 6" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="productor"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&7" alt="Imagen 7" />
+                <img src="https://picsum.photos/640/360?&7" alt="Imagen 7" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&8" alt="Imagen 8" />
+                <img src="https://picsum.photos/640/360?&8" alt="Imagen 8" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&9" alt="Imagen 9" />
+                <img src="https://picsum.photos/640/360?&9" alt="Imagen 9" />
             </div>
 
         </div>
+
     </div>
 
+
+
     <div class="about-overlay">
+
+
         <div class="about-content">
-            <div class="waves"></div>
+            <!--             <div class="waves"></div>
+                        -->
+            <div class="crt-overlay"></div>
+
             <h2>ABOUT ME</h2>
             <p>Maracaloca es una proyecto audiovisual centrado en la creatividad, la imagen y el ritmo. Este
                 espacio
@@ -403,10 +486,11 @@
             <p><a href="tel:+34123456789" class="telefono">+ 34 123 456 789</a></p>
             <p># Radial, 27</p>
             <p># 08001 Barcelona</p>
-            <div class="waves"></div>
+            <!--             <div class="waves"></div>
+                        -->
         </div>
-
     </div>
+
 
 
     <div class="modal" id="modal">
@@ -431,7 +515,7 @@
             const items = document.querySelectorAll('.mosaico .item');
 
             const initialTop = 1200;
-            let maxScroll = 2000; // se actualizará dinámicamente
+            let maxScroll = 0; // se actualizará dinámicamente
             let targetScroll = 0;
             let currentScroll = 0;
             const ease = 0.1;
@@ -451,15 +535,13 @@
 
             function updateMaxScroll() {
                 const capaHeight = capa.offsetHeight;
-                const aboutHeight = aboutOverlay.offsetHeight;
-                const extraMargin = 100;
-
-                const totalContentHeight = initialTop + capaHeight + aboutHeight + extraMargin;
+                const aboutContent = document.querySelector('.about-content');
+                const aboutBottom = aboutContent.offsetTop + aboutContent.offsetHeight;
+                const totalScrollDistance = initialTop + capaHeight + aboutBottom;
                 const viewportHeight = window.innerHeight;
 
-                maxScroll = Math.max(0, totalContentHeight - viewportHeight);
+                maxScroll = totalScrollDistance - viewportHeight;
 
-                // Corrige el targetScroll si está fuera de límites
                 if (targetScroll > maxScroll) {
                     targetScroll = maxScroll;
                 }
@@ -469,8 +551,10 @@
                 currentScroll += (targetScroll - currentScroll) * ease;
                 currentScroll = Math.min(Math.max(currentScroll, 0), maxScroll);
 
-                capa.style.top = `${initialTop - currentScroll}px`;
-
+                const newTop = initialTop - currentScroll;
+                if (capa.style.top !== `${newTop}px`) {
+                    capa.style.top = `${newTop}px`;
+                }
                 updateTextEffect(currentScroll);
                 updateAboutOverlayPosition();
 
@@ -511,6 +595,12 @@
             botonesFiltro.forEach(boton => {
                 boton.addEventListener('click', () => {
                     const filtro = boton.getAttribute('data-filtro');
+
+                    // Cambiar clase activa
+                    botonesFiltro.forEach(btn => btn.classList.remove('activo'));
+                    boton.classList.add('activo');
+
+                    // Filtrar elementos
                     items.forEach(item => {
                         const categoria = item.getAttribute('data-categoria');
                         if (filtro === 'todos' || categoria === filtro) {
@@ -520,7 +610,7 @@
                         }
                     });
 
-                    // Espera a que se rendericen los cambios antes de calcular altura
+                    // Actualizar scroll tras filtro
                     setTimeout(() => {
                         updateMaxScroll();
                     }, 50);
@@ -573,8 +663,6 @@
             smoothScroll();
         });
     </script>
-
-
 
 </body>
 
