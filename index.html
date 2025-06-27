@@ -104,11 +104,11 @@
             font-weight: bold;
             color: #ffff00;
             /* Amarillo flúor */
-            text-shadow:
+            /*     text-shadow:
                 0 0 5px #ffff00,
                 0 0 10px #ffff00,
                 0 0 20px #ffff00,
-                0 0 40px #ffff00;
+                0 0 40px #ffff00; */
             opacity: 1;
             transform: translateY(0);
             transition: opacity 0.2s, transform 0.2s;
@@ -131,18 +131,14 @@
             font-size: 1.2rem;
             color: #ffff00;
             /* Amarillo flúor */
-            text-shadow:
+            /*   text-shadow:
                 0 0 5px #ffff00,
                 0 0 10px #ffff00,
                 0 0 20px #ffff00,
-                0 0 40px #ffff00;
+                0 0 40px #ffff00; */
 
             cursor: pointer;
-            background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 0, 0.1) 0.5px, transparent 1px),
-                radial-gradient(circle at 70% 80%, rgba(255, 255, 0, 0.07) 0.6px, transparent 1px),
-                radial-gradient(circle at 50% 50%, rgba(255, 255, 0, 0.05) 0.8px, transparent 1.2px);
-            background-size: 10px 10px;
-            transition: transform 0.2s, box-shadow 0.2s;
+
         }
 
         .filtros button:hover {
@@ -272,10 +268,10 @@
             max-width: 460px;
             color: #ffff00;
             /* Amarillo flúor */
-            text-shadow:
+            /*  text-shadow:
                 0 0 5px #ffff00,
                 0 0 20px #ffff00,
-                0 0 40px #ffff00;
+                0 0 40px #ffff00; */
             font-family: Menlo, Consolas, 'Courier New', monospace;
             text-align: left;
             /* padding: 50px;
@@ -318,6 +314,52 @@
             display: none;
             /* Chrome, Safari y Opera */
         }
+
+        body.hide-bg::before {
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('images/about.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
+            filter: grayscale(100%);
+            transition: opacity 0.5s ease;
+            opacity: 1;
+        }
+
+        body.hide-bg::before {
+            opacity: 0;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: black;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        body.hide-bg::after {
+            opacity: 1;
+        }
     </style>
 
 </head>
@@ -328,12 +370,12 @@
     </div>
 
     <div class="capa-blanca" id="capaBlanca">
-        <h1></h1>
+        <div class="waves"></div>
         <div class="filtros">
-            <button data-filtro="todos">Todos</button>
-            <button data-filtro="director">Director</button>
-            <button data-filtro="productor">Productor</button>
-            <button data-filtro="camara">Cámara</button>
+            <button data-filtro="todos">TODOS</button>
+            <button data-filtro="director">DIRECTOR</button>
+            <button data-filtro="productor">PRODUCTOR</button>
+            <button data-filtro="camara">CÁMARA</button>
         </div>
         <div class="mosaico">
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
@@ -379,14 +421,14 @@
     <div class="about-overlay">
         <div class="about-content">
             <div class="waves"></div>
-            <h2>About Me</h2>
+            <h2>ABOUT ME</h2>
             <p>Maracaloca es una proyecto audiovisual centrado en la creatividad, la imagen y el ritmo. Este
                 espacio
                 es una muestra de mi trabajo.</p>
             <br>
             <br>
             <br>
-            <h2>Contact</h2>
+            <h2>CONTACT</h2>
             <p style="text-transform: none;">+ 34 123 456 789</p>
             <p># Radial, 27</p>
             <p># 08001 Barcelona</p>
@@ -418,7 +460,7 @@
             const items = document.querySelectorAll('.mosaico .item');
 
             const initialTop = 1200;
-            let maxScroll = 2000; // se actualizará dinámicamente
+            let maxScroll = 2000;
             let targetScroll = 0;
             let currentScroll = 0;
             const ease = 0.1;
@@ -445,8 +487,6 @@
                 const viewportHeight = window.innerHeight;
 
                 maxScroll = Math.max(0, totalContentHeight - viewportHeight);
-
-                // Corrige el targetScroll si está fuera de límites
                 if (targetScroll > maxScroll) {
                     targetScroll = maxScroll;
                 }
@@ -462,6 +502,13 @@
                 updateAboutOverlayPosition();
 
                 requestAnimationFrame(smoothScroll);
+
+                if (currentScroll >= maxScroll - 5) {
+                    document.body.classList.add('hide-bg');
+                } else {
+                    document.body.classList.remove('hide-bg');
+                }
+
             }
 
             function onWheel(e) {
@@ -470,26 +517,32 @@
                 e.preventDefault();
             }
 
-            let touchStartY = 0;
-            window.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 1) {
-                    touchStartY = e.touches[0].clientY;
-                }
-            }, { passive: false });
+            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-            window.addEventListener('touchmove', (e) => {
-                if (e.touches.length === 1) {
-                    const touchY = e.touches[0].clientY;
-                    const delta = touchStartY - touchY;
-                    targetScroll += delta;
-                    targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
-                    touchStartY = touchY;
-                    e.preventDefault();
-                }
-            }, { passive: false });
+            if (!isMobile) {
+                smoothScroll();
+                window.addEventListener('wheel', onWheel, { passive: false });
+                capa.addEventListener('wheel', onWheel, { passive: false });
 
-            window.addEventListener('wheel', onWheel, { passive: false });
-            capa.addEventListener('wheel', onWheel, { passive: false });
+                let touchStartY = 0;
+
+                window.addEventListener('touchstart', (e) => {
+                    if (e.touches.length === 1) {
+                        touchStartY = e.touches[0].clientY;
+                    }
+                }, { passive: false });
+
+                window.addEventListener('touchmove', (e) => {
+                    if (e.touches.length === 1) {
+                        const touchY = e.touches[0].clientY;
+                        const delta = touchStartY - touchY;
+                        targetScroll += delta;
+                        targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
+                        touchStartY = touchY;
+                        e.preventDefault();
+                    }
+                }, { passive: false });
+            }
 
             window.addEventListener('resize', () => {
                 updateMaxScroll();
@@ -507,14 +560,12 @@
                         }
                     });
 
-                    // Espera a que se rendericen los cambios antes de calcular altura
                     setTimeout(() => {
                         updateMaxScroll();
                     }, 50);
                 });
             });
 
-            // Modal logic
             const modal = document.getElementById('modal');
             const iframe = modal.querySelector('iframe');
             const modalTitle = document.getElementById('modalTitle');
@@ -557,9 +608,9 @@
             });
 
             updateMaxScroll();
-            smoothScroll();
         });
     </script>
+
 
 
 
