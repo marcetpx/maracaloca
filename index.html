@@ -512,11 +512,7 @@
 
             const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-            if (isMobile) {
-                // No ejecutar smoothScroll ni bloquear eventos
-                console.log("Modo móvil detectado: usando scroll nativo.");
-                return;
-            }
+
 
             const capa = document.getElementById('capaBlanca');
             const texto = document.getElementById('capaTexto').querySelector('h2');
@@ -556,6 +552,7 @@
                     targetScroll = maxScroll;
                 }
             }
+
 
             function smoothScroll() {
                 currentScroll += (targetScroll - currentScroll) * ease;
@@ -670,7 +667,13 @@
             });
 
             updateMaxScroll();
-            smoothScroll();
+
+
+            if (!isMobile) {
+                smoothScroll();
+            }
+
+
         });
     </script>
 
