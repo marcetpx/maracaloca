@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet" />
     <title>Maracaloca</title>
     <style>
@@ -13,7 +13,6 @@
             font-weight: normal;
             font-style: normal;
         }
-
 
         * {
             margin: 0;
@@ -26,6 +25,7 @@
             height: 100%;
             font-family: Avalon, Consolas, 'Courier New', monospace;
             overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
         }
 
         body::before {
@@ -56,6 +56,8 @@
             top: 1200px;
             width: 100%;
             z-index: 10;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
 
         .mosaico {
@@ -75,6 +77,7 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             transition: opacity 0.3s ease, transform 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .item img {
@@ -86,7 +89,8 @@
             transition: filter 0.4s ease;
         }
 
-        .item:hover img {
+        .item:hover img,
+        .item:active img {
             filter: grayscale(0%);
         }
 
@@ -112,12 +116,6 @@
             font-size: 5rem;
             font-weight: bold;
             color: whitesmoke;
-            /* Amarillo flúor */
-            /*     text-shadow:
-                0 0 5px whitesmoke,
-                0 0 10px whitesmoke,
-                0 0 20px whitesmoke,
-                0 0 40px whitesmoke; */
             opacity: 1;
             transform: translateY(0);
             transition: opacity 0.2s, transform 0.2s;
@@ -132,15 +130,6 @@
             justify-content: center;
         }
 
-        /*         .filtros button {
-            all: unset;
-            font-family: 'Avalon', Consolas, monospace;
-            font-size: 1.2rem;
-            color: black;
-            cursor: pointer;
-        } 
-*/
-
         .filtros button {
             all: unset;
             font-family: 'Avalon', Consolas, monospace;
@@ -149,8 +138,8 @@
             cursor: pointer;
             position: relative;
             padding-bottom: 4px;
-            /* espacio para la línea */
             transition: color 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .filtros button::after {
@@ -170,8 +159,6 @@
             width: 100%;
             transform: translateX(-50%) scaleX(1);
         }
-
-
 
         .modal {
             position: fixed;
@@ -243,6 +230,7 @@
             cursor: pointer;
             font-family: monospace;
             z-index: 1020;
+            -webkit-tap-highlight-color: transparent;
         }
 
         @media (max-width: 1000px) {
@@ -263,16 +251,12 @@
                 max-height: 90vh;
                 border-width: 2px;
             }
-        }
 
-        @media (max-width: 700px) {
             .capa-texto h2 {
                 font-size: 2rem;
-                /* o ajusta hasta que quepa en una sola línea */
                 letter-spacing: 0.2rem;
             }
         }
-
 
         .capa-texto.hidden {
             visibility: hidden;
@@ -283,82 +267,54 @@
             justify-content: flex-start;
             padding: 100px 60px;
             position: absolute;
-            /* <-- cambia de relative a absolute */
             z-index: 8;
             background-color: transparent;
             width: 100%;
             background-color: #000;
-
         }
 
         .about-content {
             max-width: 460px;
             color: whitesmoke;
-            /* Amarillo flúor */
-            /*  text-shadow:
-                0 0 5px whitesmoke,
-                0 0 20px whitesmoke,
-                0 0 40px whitesmoke; */
             font-family: Avalon, Consolas, 'Courier New', monospace;
             text-align: left;
-            /* padding: 50px;
-            margin-left: -40px; */
             padding-bottom: 100px;
         }
-
 
         .about-content h2 {
             font-size: 2.5rem;
             margin-bottom: 15px;
             font-family: Avalon, Consolas, 'Courier New', monospace;
-
         }
 
         .about-content p {
             font-size: 1.2rem;
             line-height: 1.6;
             font-family: Avalon, Consolas, 'Courier New', monospace;
-
         }
-
-        /*         .waves {
-            width: 100%;
-            height: 5%;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            background-image: url('images/lines.gif');
-
-        } */
 
         body {
             scrollbar-width: none;
-            /* Firefox */
             -ms-overflow-style: none;
-            /* IE y Edge */
         }
 
         body::-webkit-scrollbar {
             display: none;
-            /* Chrome, Safari y Opera */
         }
 
         .telefono {
             color: whitesmoke !important;
             text-decoration: none !important;
             -webkit-tap-highlight-color: transparent;
-            /* para eliminar highlight al tocar */
             cursor: pointer;
             font-family: Avalon, Consolas, 'Courier New', monospace;
         }
 
-        /* Para iOS evitar el estilo de detección automática */
         a[href^="tel:"] {
             color: whitesmoke !important;
             text-decoration: none !important;
             -webkit-text-fill-color: whitesmoke !important;
-            /* fuerza color en iOS Safari */
         }
-
 
         .crt-overlay {
             position: fixed;
@@ -370,51 +326,128 @@
             pointer-events: none;
             background-image:
                 repeating-linear-gradient(to bottom,
-                    rgba(255, 255, 255, 0.15),
-                    rgba(255, 255, 255, 0.15) 2px,
-                    rgba(0, 0, 0, 0.15) 2px,
-                    rgba(0, 0, 0, 0.15) 4px),
+                    rgba(255, 255, 255, 0.1),
+                    rgba(255, 255, 255, 0.1) 2px,
+                    rgba(0, 0, 0, 0.1) 2px,
+                    rgba(0, 0, 0, 0.1) 5px),
                 repeating-linear-gradient(to right,
-                    rgba(255, 255, 255, 0.03),
-                    rgba(255, 255, 255, 0.03) 1px,
+                    rgba(255, 255, 255, 0.025),
+                    rgba(255, 255, 255, 0.025) 1px,
                     transparent 1px,
-                    transparent 2px);
+                    transparent 2.5px);
             animation: flicker 1s infinite;
             mix-blend-mode: screen;
-            filter: brightness(1.3) contrast(1.5);
-            opacity: 0.5;
+            filter: brightness(1.2) contrast(1.3);
+            opacity: 0.35;
         }
 
-        /* Animación flicker más rápida y con variación de opacidad */
-        /* @keyframes flicker {
+        .hamburguesa {
+            position: fixed;
+            top: 18px;
+            right: 15px;
+            z-index: 3000;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            gap: 5px;
+            transition: transform 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-            0%,
-            100% {
-                opacity: 0.6;
+        .hamburguesa span {
+            width: 26px;
+            height: 3px;
+            background-color: white;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+            transform-origin: center;
+        }
+
+        .menu-horizontal {
+            position: fixed;
+            top: 0;
+            right: 55px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 37px 20px;
+            background: rgba(0, 0, 0, 0);
+            z-index: 2999;
+            transform: translateX(150%);
+            transition: transform 0.4s ease-in-out;
+            border-bottom-left-radius: 10px;
+            backdrop-filter: blur(4px);
+        }
+
+        .menu-horizontal a {
+            color: white;
+            text-decoration: none;
+            font-family: Avalon, Consolas, monospace;
+            font-size: 1.1rem;
+            white-space: nowrap;
+            transition: color 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .menu-horizontal a:hover,
+        .menu-horizontal a:active {
+            color: #ccc;
+        }
+
+        .menu-horizontal.activo {
+            transform: translateX(0%);
+        }
+
+        /* Específico para iOS */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                -webkit-user-select: none;
+                user-select: none;
             }
 
-            25% {
-                opacity: 0.7;
+            .item {
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            }
+        }
+
+        /* Optimización para dispositivos móviles */
+        @media (max-width: 768px) {
+            .capa-blanca {
+                padding: 20px;
             }
 
-            50% {
-                opacity: 0.55;
+            .about-overlay {
+                padding: 50px 30px;
             }
 
-            75% {
-                opacity: 0.65;
+            .about-content {
+                max-width: 100%;
             }
-        }*/
-
-        /* Footer fijo abajo */
+        }
     </style>
-
 </head>
 
 <body>
-    a
+    <div class="hamburguesa" id="hamburguesa">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="menu-horizontal" id="menuHorizontal">
+        <a href="#works">WORKS</a>
+        <a href="#about">ABOUT</a>
+        <a href="#about"> / </a>
+    </div>
+
     <div class="capa-texto" id="capaTexto">
-        <h2>VICTOR PALOMO</h2>a
+        <h2>VICTOR PALOMO</h2>
     </div>
 
     <div class="capa-blanca" id="capaBlanca">
@@ -426,59 +459,49 @@
         <div class="mosaico">
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?&1" alt="Imagen 1" />
+                <img src="https://picsum.photos/640/360?1" alt="Imagen 1" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="productor"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?&2" alt="Imagen 2" />
+                <img src="https://picsum.photos/640/360?2" alt="Imagen 2" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?&3" alt="Imagen 3" />
+                <img src="https://picsum.photos/640/360?3" alt="Imagen 3" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?&4" alt="Imagen 4" />
+                <img src="https://picsum.photos/640/360?4" alt="Imagen 4" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?&5" alt="Imagen 5" />
+                <img src="https://picsum.photos/640/360?5" alt="Imagen 5" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?&6" alt="Imagen 6" />
+                <img src="https://picsum.photos/640/360?6" alt="Imagen 6" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="productor"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?&7" alt="Imagen 7" />
+                <img src="https://picsum.photos/640/360?7" alt="Imagen 7" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?&8" alt="Imagen 8" />
+                <img src="https://picsum.photos/640/360?8" alt="Imagen 8" />
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?&9" alt="Imagen 9" />
+                <img src="https://picsum.photos/640/360?9" alt="Imagen 9" />
             </div>
-
         </div>
-
     </div>
 
-
-
     <div class="about-overlay">
-
-
         <div class="about-content">
-            <!--             <div class="waves"></div>
-                        -->
             <div class="crt-overlay"></div>
-
             <h2>ABOUT ME</h2>
             <p>Maracaloca es una proyecto audiovisual centrado en la creatividad, la imagen y el ritmo. Este
-                espacio
-                es una muestra de mi trabajo.</p>
+                espacio es una muestra de mi trabajo.</p>
             <br>
             <br>
             <br>
@@ -486,12 +509,8 @@
             <p><a href="tel:+34123456789" class="telefono">+ 34 123 456 789</a></p>
             <p># Radial, 27</p>
             <p># 08001 Barcelona</p>
-            <!--             <div class="waves"></div>
-                        -->
         </div>
     </div>
-
-
 
     <div class="modal" id="modal">
         <div class="modal-content">
@@ -508,11 +527,10 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-
-
-            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-
+            // Detectar iOS específicamente
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || isIOS;
 
             const capa = document.getElementById('capaBlanca');
             const texto = document.getElementById('capaTexto').querySelector('h2');
@@ -521,22 +539,25 @@
             const items = document.querySelectorAll('.mosaico .item');
 
             const initialTop = 1200;
-            let maxScroll = 0; // se actualizará dinámicamente
+            let maxScroll = 0;
             let targetScroll = 0;
             let currentScroll = 0;
-            const ease = 0.1;
+            const ease = isIOS ? 0.05 : 0.1; // Suavizar más en iOS
 
             function updateTextEffect(scroll) {
-                const opacity = 1 - (scroll / maxScroll);
+                const opacity = Math.max(0, 1 - (scroll / maxScroll));
                 const translateY = -scroll * 0.1;
 
-                texto.style.opacity = opacity.toFixed(2);
-                texto.style.transform = `translateY(${translateY}px)`;
+                if (texto.style.opacity !== opacity.toString()) {
+                    texto.style.opacity = opacity;
+                    texto.style.transform = `translateY(${translateY}px)`;
+                }
             }
 
             function updateAboutOverlayPosition() {
                 const aboutOffset = initialTop + capa.offsetHeight;
-                aboutOverlay.style.top = `${aboutOffset - currentScroll}px`;
+                const newTop = aboutOffset - currentScroll;
+                aboutOverlay.style.top = `${newTop}px`;
             }
 
             function updateMaxScroll() {
@@ -546,68 +567,109 @@
                 const totalScrollDistance = initialTop + capaHeight + aboutBottom;
                 const viewportHeight = window.innerHeight;
 
-                maxScroll = totalScrollDistance - viewportHeight;
+                maxScroll = Math.max(0, totalScrollDistance - viewportHeight);
 
                 if (targetScroll > maxScroll) {
                     targetScroll = maxScroll;
                 }
             }
 
-
+            let animationId;
             function smoothScroll() {
-                currentScroll += (targetScroll - currentScroll) * ease;
-                currentScroll = Math.min(Math.max(currentScroll, 0), maxScroll);
+                if (Math.abs(targetScroll - currentScroll) > 0.1) {
+                    currentScroll += (targetScroll - currentScroll) * ease;
+                    currentScroll = Math.min(Math.max(currentScroll, 0), maxScroll);
 
-                const newTop = initialTop - currentScroll;
-                if (capa.style.top !== `${newTop}px`) {
+                    const newTop = initialTop - currentScroll;
                     capa.style.top = `${newTop}px`;
+                    updateTextEffect(currentScroll);
+                    updateAboutOverlayPosition();
                 }
-                updateTextEffect(currentScroll);
-                updateAboutOverlayPosition();
 
-                requestAnimationFrame(smoothScroll);
+                animationId = requestAnimationFrame(smoothScroll);
             }
 
             function onWheel(e) {
-                targetScroll += e.deltaY;
-                targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
                 e.preventDefault();
+                const delta = e.deltaY || e.detail || e.wheelDelta;
+                targetScroll += delta;
+                targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
             }
 
+            // Mejorar touch handling para iOS
             let touchStartY = 0;
-            window.addEventListener('touchstart', (e) => {
+            let touchStartTime = 0;
+            let lastTouchY = 0;
+            let velocity = 0;
+            let isScrolling = false;
+
+            function handleTouchStart(e) {
                 if (e.touches.length === 1) {
                     touchStartY = e.touches[0].clientY;
+                    lastTouchY = touchStartY;
+                    touchStartTime = Date.now();
+                    velocity = 0;
+                    isScrolling = true;
                 }
-            }, { passive: false });
+            }
 
-            window.addEventListener('touchmove', (e) => {
-                if (e.touches.length === 1) {
+            function handleTouchMove(e) {
+                if (e.touches.length === 1 && isScrolling) {
                     const touchY = e.touches[0].clientY;
-                    const delta = touchStartY - touchY;
-                    targetScroll += delta;
-                    targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
-                    touchStartY = touchY;
-                    e.preventDefault();
+                    const currentTime = Date.now();
+                    const timeDelta = currentTime - touchStartTime;
+
+                    if (timeDelta > 0) {
+                        const delta = lastTouchY - touchY;
+                        velocity = delta / timeDelta;
+
+                        targetScroll += delta * 2; // Multiplicador para sensibilidad
+                        targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
+
+                        lastTouchY = touchY;
+                        touchStartTime = currentTime;
+
+                        // Solo prevenir si realmente estamos scrollando nuestro contenido
+                        if (targetScroll > 0 && targetScroll < maxScroll) {
+                            e.preventDefault();
+                        }
+                    }
                 }
-            }, { passive: false });
+            }
 
-            window.addEventListener('wheel', onWheel, { passive: false });
-            capa.addEventListener('wheel', onWheel, { passive: false });
+            function handleTouchEnd(e) {
+                if (isScrolling) {
+                    // Aplicar momentum scrolling
+                    if (Math.abs(velocity) > 0.5) {
+                        targetScroll += velocity * 100;
+                        targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
+                    }
+                    isScrolling = false;
+                }
+            }
 
-            window.addEventListener('resize', () => {
-                updateMaxScroll();
-            });
+            // Event listeners mejorados para iOS
+            if (isMobile) {
+                document.addEventListener('touchstart', handleTouchStart, { passive: true });
+                document.addEventListener('touchmove', handleTouchMove, { passive: false });
+                document.addEventListener('touchend', handleTouchEnd, { passive: true });
 
+                // Ejecutar smooth scroll también en móviles
+                smoothScroll();
+            } else {
+                window.addEventListener('wheel', onWheel, { passive: false });
+                smoothScroll();
+            }
+
+            // Filtros
             botonesFiltro.forEach(boton => {
-                boton.addEventListener('click', () => {
+                boton.addEventListener('click', (e) => {
+                    e.preventDefault();
                     const filtro = boton.getAttribute('data-filtro');
 
-                    // Cambiar clase activa
                     botonesFiltro.forEach(btn => btn.classList.remove('activo'));
                     boton.classList.add('activo');
 
-                    // Filtrar elementos
                     items.forEach(item => {
                         const categoria = item.getAttribute('data-categoria');
                         if (filtro === 'todos' || categoria === filtro) {
@@ -617,66 +679,87 @@
                         }
                     });
 
-                    // Actualizar scroll tras filtro
                     setTimeout(() => {
                         updateMaxScroll();
-                    }, 50);
+                    }, 100);
                 });
             });
 
-            // Modal logic
+            // Modal logic mejorado para iOS
             const modal = document.getElementById('modal');
             const iframe = modal.querySelector('iframe');
             const modalTitle = document.getElementById('modalTitle');
             const modalDescription = document.getElementById('modalDescription');
             const closeBtn = modal.querySelector('.close-btn');
 
-            document.querySelectorAll('.item').forEach(item => {
-                item.addEventListener('click', () => {
+            items.forEach(item => {
+                const openModal = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
                     const videoURL = item.getAttribute('data-video');
                     const title = item.getAttribute('data-line1');
                     const description = item.getAttribute('data-line2');
+
                     iframe.src = videoURL + '?autoplay=1&title=0&byline=0&portrait=0';
                     modalTitle.textContent = title;
                     modalDescription.textContent = description;
                     modal.classList.add('active');
                     document.body.style.overflow = 'hidden';
-                });
+
+                    // Cancelar animación de scroll mientras modal está abierto
+                    if (animationId) {
+                        cancelAnimationFrame(animationId);
+                    }
+                };
+
+                item.addEventListener('click', openModal);
+                if (isMobile) {
+                    item.addEventListener('touchend', openModal, { passive: false });
+                }
             });
 
-            closeBtn.addEventListener('click', () => {
+            const closeModal = () => {
                 modal.classList.remove('active');
                 iframe.src = '';
                 document.body.style.overflow = '';
-            });
 
+                // Reanudar animación de scroll
+                if (isMobile || !isMobile) {
+                    smoothScroll();
+                }
+            };
+
+            closeBtn.addEventListener('click', closeModal);
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
-                    modal.classList.remove('active');
-                    iframe.src = '';
-                    document.body.style.overflow = '';
+                    closeModal();
                 }
             });
 
             window.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && modal.classList.contains('active')) {
-                    modal.classList.remove('active');
-                    iframe.src = '';
-                    document.body.style.overflow = '';
+                    closeModal();
                 }
             });
 
+            // Hamburger menu
+            const hamburguesa = document.getElementById('hamburguesa');
+            const menuHorizontal = document.getElementById('menuHorizontal');
+
+            hamburguesa.addEventListener('click', (e) => {
+                e.preventDefault();
+                menuHorizontal.classList.toggle('activo');
+            });
+
+            // Inicialización
+            window.addEventListener('resize', () => {
+                updateMaxScroll();
+            });
+
             updateMaxScroll();
-
-
-            if (!isMobile) {
-                smoothScroll();
-            }
-
-
         });
     </script>
-
 </body>
 
 </html>
