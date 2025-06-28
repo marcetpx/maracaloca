@@ -35,7 +35,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('images/about.jpeg');
+            background-image: url('https://picsum.photos/1920/1080?grayscale');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -685,7 +685,7 @@
                 });
             });
 
-            // Modal logic mejorado para iOS
+            // Modal logic mejorado para iOS - evitar disparo durante scroll
             const modal = document.getElementById('modal');
             const iframe = modal.querySelector('iframe');
             const modalTitle = document.getElementById('modalTitle');
@@ -693,7 +693,38 @@
             const closeBtn = modal.querySelector('.close-btn');
 
             items.forEach(item => {
+                let touchStartPos = { x: 0, y: 0 };
+                let touchMoved = false;
+                let touchStartTimestamp = 0;
+
+                const handleTouchStart = (e) => {
+                    touchStartPos.x = e.touches[0].clientX;
+                    touchStartPos.y = e.touches[0].clientY;
+                    touchMoved = false;
+                    touchStartTimestamp = Date.now();
+                };
+
+                const handleTouchMove = (e) => {
+                    if (!touchMoved) {
+                        const deltaX = Math.abs(e.touches[0].clientX - touchStartPos.x);
+                        const deltaY = Math.abs(e.touches[0].clientY - touchStartPos.y);
+                        // Si se movió más de 10px, considerarlo como scroll, no click
+                        if (deltaX > 10 || deltaY > 10) {
+                            touchMoved = true;
+                        }
+                    }
+                };
+
                 const openModal = (e) => {
+                    // En móviles, verificar si fue un tap real o scroll
+                    if (isMobile) {
+                        const touchDuration = Date.now() - touchStartTimestamp;
+                        // Si se movió durante el touch o duró más de 500ms, no abrir modal
+                        if (touchMoved || touchDuration > 500) {
+                            return;
+                        }
+                    }
+
                     e.preventDefault();
                     e.stopPropagation();
 
@@ -713,9 +744,13 @@
                     }
                 };
 
-                item.addEventListener('click', openModal);
+                // Event listeners diferentes para móvil y desktop
                 if (isMobile) {
+                    item.addEventListener('touchstart', handleTouchStart, { passive: true });
+                    item.addEventListener('touchmove', handleTouchMove, { passive: true });
                     item.addEventListener('touchend', openModal, { passive: false });
+                } else {
+                    item.addEventListener('click', openModal);
                 }
             });
 
