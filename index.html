@@ -508,6 +508,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
+
             const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
             if (isMobile) {
@@ -516,7 +518,6 @@
                 return;
             }
 
-            // TODO: El resto de tu código smooth scroll solo si NO es móvil
             const capa = document.getElementById('capaBlanca');
             const texto = document.getElementById('capaTexto').querySelector('h2');
             const aboutOverlay = document.querySelector('.about-overlay');
@@ -524,7 +525,7 @@
             const items = document.querySelectorAll('.mosaico .item');
 
             const initialTop = 1200;
-            let maxScroll = 0;
+            let maxScroll = 0; // se actualizará dinámicamente
             let targetScroll = 0;
             let currentScroll = 0;
             const ease = 0.1;
@@ -550,6 +551,7 @@
                 const viewportHeight = window.innerHeight;
 
                 maxScroll = totalScrollDistance - viewportHeight;
+
                 if (targetScroll > maxScroll) {
                     targetScroll = maxScroll;
                 }
@@ -563,7 +565,6 @@
                 if (capa.style.top !== `${newTop}px`) {
                     capa.style.top = `${newTop}px`;
                 }
-
                 updateTextEffect(currentScroll);
                 updateAboutOverlayPosition();
 
@@ -605,9 +606,11 @@
                 boton.addEventListener('click', () => {
                     const filtro = boton.getAttribute('data-filtro');
 
+                    // Cambiar clase activa
                     botonesFiltro.forEach(btn => btn.classList.remove('activo'));
                     boton.classList.add('activo');
 
+                    // Filtrar elementos
                     items.forEach(item => {
                         const categoria = item.getAttribute('data-categoria');
                         if (filtro === 'todos' || categoria === filtro) {
@@ -617,17 +620,59 @@
                         }
                     });
 
+                    // Actualizar scroll tras filtro
                     setTimeout(() => {
                         updateMaxScroll();
                     }, 50);
                 });
             });
 
+            // Modal logic
+            const modal = document.getElementById('modal');
+            const iframe = modal.querySelector('iframe');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const closeBtn = modal.querySelector('.close-btn');
+
+            document.querySelectorAll('.item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const videoURL = item.getAttribute('data-video');
+                    const title = item.getAttribute('data-line1');
+                    const description = item.getAttribute('data-line2');
+                    iframe.src = videoURL + '?autoplay=1&title=0&byline=0&portrait=0';
+                    modalTitle.textContent = title;
+                    modalDescription.textContent = description;
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('active');
+                iframe.src = '';
+                document.body.style.overflow = '';
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    iframe.src = '';
+                    document.body.style.overflow = '';
+                }
+            });
+
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                    iframe.src = '';
+                    document.body.style.overflow = '';
+                }
+            });
+
             updateMaxScroll();
             smoothScroll();
         });
     </script>
-
 
 </body>
 
