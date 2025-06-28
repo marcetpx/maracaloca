@@ -343,7 +343,7 @@
 
         .hamburguesa {
             position: fixed;
-            top: 19px;
+            top: 22px;
             right: 15px;
             z-index: 3000;
             cursor: pointer;
@@ -354,7 +354,7 @@
             width: 30px;
             height: 30px;
             gap: 5px;
-            transition: transform 0.3s ease;
+            transition: opacity 0.3s ease, transform 0.3s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -366,6 +366,122 @@
             transition: all 0.3s ease;
             border-radius: 2px;
             transform-origin: center;
+        }
+
+        /* Hamburguesa en fondo blanco */
+        .hamburguesa.fondo-blanco span {
+            background-color: #ccc;
+        }
+
+        /* Hover effect para fondo blanco */
+        .hamburguesa.fondo-blanco:hover span {
+            background-color: #999;
+        }
+
+        /* Animación cuando el menú está activo - transformación a aspa (X) rotativa */
+        .hamburguesa.activo {
+            animation: rotateX 0.6s ease-in-out forwards;
+        }
+
+        .hamburguesa.activo span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburguesa.activo span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .hamburguesa.activo span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Keyframes para la rotación del aspa */
+        @keyframes rotateX {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(180deg);
+            }
+        }
+
+        /* Animación de vuelta cuando se desactiva */
+        .hamburguesa:not(.activo) {
+            animation: rotateBack 0.6s ease-in-out forwards;
+        }
+
+        @keyframes rotateBack {
+            0% {
+                transform: rotate(180deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .menu-horizontal {
+            position: fixed;
+            top: 0px;
+            right: 15px;
+            /* Alineado con la hamburguesa */
+            height: 50px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 37px 20px;
+            background: rgba(0, 0, 0, 0);
+            z-index: 2999;
+            transform: translateX(100%);
+            /* Ajustado para que salga completamente fuera */
+            transition: transform 0.4s ease-in-out;
+            border-bottom-left-radius: 10px;
+            backdrop-filter: blur(4px);
+            transform-origin: right center;
+            /* Origen de transformación alineado a la derecha */
+        }
+
+        /* Menú horizontal cuando está activo */
+        .menu-horizontal.activo {
+            transform: translateX(0);
+        }
+
+        .menu-horizontal a {
+            color: white;
+            text-decoration: none;
+            font-family: Avalon, Consolas, monospace;
+            font-size: 1.1rem;
+            white-space: nowrap;
+            transition: color 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Keyframes para la rotación del aspa */
+        @keyframes rotateX {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(180deg);
+            }
+        }
+
+        /* Animación de vuelta cuando se desactiva */
+        .hamburguesa:not(.activo) {
+            animation: rotateBack 0.6s ease-in-out forwards;
+        }
+
+        @keyframes rotateBack {
+            0% {
+                transform: rotate(180deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .menu-horizontal {
@@ -385,6 +501,11 @@
             backdrop-filter: blur(4px);
         }
 
+        /* Menú horizontal cuando está activo */
+        .menu-horizontal.activo {
+            transform: translateX(0);
+        }
+
         .menu-horizontal a {
             color: white;
             text-decoration: none;
@@ -393,15 +514,6 @@
             white-space: nowrap;
             transition: color 0.3s;
             -webkit-tap-highlight-color: transparent;
-        }
-
-        .menu-horizontal a:hover,
-        .menu-horizontal a:active {
-            color: #ccc;
-        }
-
-        .menu-horizontal.activo {
-            transform: translateX(0%);
         }
 
         /* Específico para iOS */
@@ -544,6 +656,78 @@
             let currentScroll = 0;
             const ease = isIOS ? 0.05 : 0.1; // Suavizar más en iOS
 
+            // Variables para el menú hamburguesa
+            const hamburguesa = document.getElementById('hamburguesa');
+            const menuHorizontal = document.getElementById('menuHorizontal');
+            let scrollTimeout;
+            let isScrolling = false;
+            let lastScrollPosition = 0;
+
+            // Variables para navegación suave
+            let lastSectionUpdate = 0;
+
+            // Función para navegar suavemente a una sección específica
+            function scrollToSection(sectionId) {
+                let targetPosition = 0;
+
+                if (sectionId === 'works') {
+                    // Ir a la capa blanca (sección works)
+                    targetPosition = initialTop - 50;
+                } else if (sectionId === 'about') {
+                    // Ir a la sección about
+                    const aboutOffset = initialTop + capa.offsetHeight;
+                    targetPosition = aboutOffset;
+                }
+
+                // Asegurar que no exceda los límites
+                targetPosition = Math.min(Math.max(targetPosition, 0), maxScroll);
+
+                // Actualizar el target scroll para animación suave
+                targetScroll = targetPosition;
+            }
+
+            // Manejar navegación desde URL (para enlaces directos)
+            function handleHashNavigation() {
+                const hash = window.location.hash;
+                if (hash) {
+                    const sectionId = hash.substring(1);
+                    // Pequeño delay para asegurar que la página esté completamente cargada
+                    setTimeout(() => {
+                        scrollToSection(sectionId);
+                    }, 100);
+                }
+            }
+
+            // Actualizar la URL mientras se hace scroll (para mejor UX)
+            function updateURLHash() {
+                const now = Date.now();
+                // Throttle para no actualizar muy frecuentemente
+                if (now - lastSectionUpdate < 500) return;
+
+                const scrollRatio = currentScroll / maxScroll;
+                let newHash = '';
+
+                if (scrollRatio < 0.1) {
+                    // Cerca del inicio - sin hash
+                    newHash = '';
+                } else if (scrollRatio < 0.7) {
+                    // En la sección works
+                    newHash = '#works';
+                } else {
+                    // En la sección about
+                    newHash = '#about';
+                }
+
+                // Solo actualizar si cambió
+                const currentHash = window.location.hash;
+                if (currentHash !== newHash) {
+                    // Usar replaceState para no agregar entradas al historial
+                    const newURL = window.location.pathname + window.location.search + newHash;
+                    history.replaceState(null, '', newURL);
+                    lastSectionUpdate = now;
+                }
+            }
+
             function updateTextEffect(scroll) {
                 const opacity = Math.max(0, 1 - (scroll / maxScroll));
                 const translateY = -scroll * 0.1;
@@ -557,6 +741,21 @@
             function updateAboutOverlayPosition() {
                 const aboutOffset = initialTop + capa.offsetHeight;
                 const newTop = aboutOffset - currentScroll;
+
+                // En móviles, asegurar que no se muestre debajo del contenido
+                if (isMobile) {
+                    const viewportHeight = window.innerHeight;
+                    const documentHeight = document.documentElement.scrollHeight;
+
+                    // Si estamos cerca del final del documento, ocultar el overlay
+                    if (currentScroll + viewportHeight >= documentHeight - 50) {
+                        aboutOverlay.style.display = 'none';
+                        return;
+                    } else {
+                        aboutOverlay.style.display = 'block';
+                    }
+                }
+
                 aboutOverlay.style.top = `${newTop}px`;
             }
 
@@ -569,9 +768,67 @@
 
                 maxScroll = Math.max(0, totalScrollDistance - viewportHeight);
 
+                // En móviles, ajustar el maxScroll para evitar espacios blancos
+                if (isMobile) {
+                    const documentHeight = document.documentElement.scrollHeight;
+                    const bodyHeight = document.body.offsetHeight;
+                    const realMaxScroll = Math.max(documentHeight, bodyHeight) - viewportHeight;
+
+                    // Usar el menor de los dos para evitar over-scroll
+                    maxScroll = Math.min(maxScroll, realMaxScroll);
+                }
+
                 if (targetScroll > maxScroll) {
                     targetScroll = maxScroll;
                 }
+            }
+
+            // Función para detectar color de fondo y cambiar hamburguesa
+            function updateHamburgerColor() {
+                // Obtener el color de fondo del body o del elemento principal
+                const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+                const capaRect = capa.getBoundingClientRect();
+
+                // Si la capa blanca está visible en la pantalla (cerca del top)
+                if (capaRect.top <= 100 && capaRect.bottom >= 0) {
+                    hamburguesa.classList.add('fondo-blanco');
+                } else {
+                    hamburguesa.classList.remove('fondo-blanco');
+                }
+            }
+
+            // Función para manejar la visibilidad del menú hamburguesa durante scroll
+            function handleHamburgerVisibility() {
+                const scrollDelta = Math.abs(currentScroll - lastScrollPosition);
+
+                // Actualizar color de hamburguesa según el fondo
+                updateHamburgerColor();
+
+                // Si hay movimiento de scroll significativo
+                if (scrollDelta > 5) {
+                    if (!isScrolling) {
+                        isScrolling = true;
+                        // Ocultar menú y resetear hamburguesa durante scroll
+                        if (menuHorizontal.classList.contains('activo')) {
+                            hamburguesa.classList.remove('activo');
+                            menuHorizontal.classList.remove('activo');
+                        }
+                        hamburguesa.style.opacity = '0'; // Desaparecer completamente
+                        hamburguesa.style.pointerEvents = 'none';
+                    }
+
+                    // Limpiar timeout anterior
+                    clearTimeout(scrollTimeout);
+
+                    // Establecer nuevo timeout para cuando se detenga el scroll
+                    scrollTimeout = setTimeout(() => {
+                        isScrolling = false;
+                        hamburguesa.style.opacity = '1'; // Aparecer completamente
+                        hamburguesa.style.pointerEvents = 'auto';
+                    }, 150); // Esperar 150ms después de que se detenga el scroll
+                }
+
+                lastScrollPosition = currentScroll;
             }
 
             let animationId;
@@ -584,6 +841,10 @@
                     capa.style.top = `${newTop}px`;
                     updateTextEffect(currentScroll);
                     updateAboutOverlayPosition();
+                    updateURLHash(); // Actualizar URL hash
+
+                    // Manejar visibilidad de hamburguesa durante scroll
+                    handleHamburgerVisibility();
                 }
 
                 animationId = requestAnimationFrame(smoothScroll);
@@ -601,7 +862,7 @@
             let touchStartTime = 0;
             let lastTouchY = 0;
             let velocity = 0;
-            let isScrolling = false;
+            let isTouchScrolling = false;
 
             function handleTouchStart(e) {
                 if (e.touches.length === 1) {
@@ -609,12 +870,12 @@
                     lastTouchY = touchStartY;
                     touchStartTime = Date.now();
                     velocity = 0;
-                    isScrolling = true;
+                    isTouchScrolling = true;
                 }
             }
 
             function handleTouchMove(e) {
-                if (e.touches.length === 1 && isScrolling) {
+                if (e.touches.length === 1 && isTouchScrolling) {
                     const touchY = e.touches[0].clientY;
                     const currentTime = Date.now();
                     const timeDelta = currentTime - touchStartTime;
@@ -638,13 +899,19 @@
             }
 
             function handleTouchEnd(e) {
-                if (isScrolling) {
+                if (isTouchScrolling) {
                     // Aplicar momentum scrolling
                     if (Math.abs(velocity) > 0.5) {
                         targetScroll += velocity * 100;
                         targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
                     }
-                    isScrolling = false;
+
+                    // Asegurar que no sobrepase los límites en móviles
+                    if (isMobile) {
+                        targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
+                    }
+
+                    isTouchScrolling = false;
                 }
             }
 
@@ -778,19 +1045,66 @@
                 }
             });
 
-            // Hamburger menu
-            const hamburguesa = document.getElementById('hamburguesa');
-            const menuHorizontal = document.getElementById('menuHorizontal');
-
+            // Hamburger menu con animación mejorada
             hamburguesa.addEventListener('click', (e) => {
                 e.preventDefault();
-                menuHorizontal.classList.toggle('activo');
+                e.stopPropagation();
+
+                // Solo permitir click si no está en modo scroll
+                if (!isScrolling) {
+                    hamburguesa.classList.toggle('activo');
+                    menuHorizontal.classList.toggle('activo');
+                }
             });
+
+            // NAVEGACIÓN SUAVE - Manejar clicks en enlaces del menú
+            const enlaces = document.querySelectorAll('.menu-horizontal a');
+            enlaces.forEach(enlace => {
+                enlace.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+
+                    // Solo procesar enlaces internos (que empiecen con #)
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+
+                        const sectionId = href.substring(1); // Remover el #
+                        scrollToSection(sectionId);
+
+                        // Cerrar el menú después de navegar
+                        hamburguesa.classList.remove('activo');
+                        menuHorizontal.classList.remove('activo');
+                    }
+                });
+            });
+
+            // Cerrar menú al hacer clic fuera de él
+            document.addEventListener('click', function (e) {
+                if (!hamburguesa.contains(e.target) && !menuHorizontal.contains(e.target)) {
+                    hamburguesa.classList.remove('activo');
+                    menuHorizontal.classList.remove('activo');
+                }
+            });
+
+            // Agregar estilos de transición a la hamburguesa para suavizar aparición/desaparición
+            hamburguesa.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+
+            // NAVEGACIÓN - Event listeners
+            // Ejecutar al cargar la página
+            handleHashNavigation();
+
+            // Manejar cambios en el hash de la URL
+            window.addEventListener('hashchange', handleHashNavigation);
 
             // Inicialización
             window.addEventListener('resize', () => {
                 updateMaxScroll();
             });
+
+            // Detectar cambios de color iniciales
+            updateHamburgerColor();
+
+            // También actualizar en resize por si cambia el layout
+            window.addEventListener('resize', updateHamburgerColor);
 
             updateMaxScroll();
         });
