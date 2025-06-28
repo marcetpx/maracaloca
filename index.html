@@ -637,480 +637,139 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Detectar iOS específicamente
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || isIOS;
-
-            const capa = document.getElementById('capaBlanca');
-            const texto = document.getElementById('capaTexto').querySelector('h2');
-            const aboutOverlay = document.querySelector('.about-overlay');
-            const botonesFiltro = document.querySelectorAll('.filtros button');
-            const items = document.querySelectorAll('.mosaico .item');
-
-            const initialTop = 1200;
-            let maxScroll = 0;
-            let targetScroll = 0;
-            let currentScroll = 0;
-            const ease = 0.1;
-
-            // Variables para el menú hamburguesa
-            const hamburguesa = document.getElementById('hamburguesa');
-            const menuHorizontal = document.getElementById('menuHorizontal');
-            let scrollTimeout;
-            let isScrolling = false;
-            let lastScrollPosition = 0;
-
-            // Variables para navegación suave
-            let lastSectionUpdate = 0;
-
-            // NUEVO: Prevenir scroll del body en móviles
-            if (isMobile) {
-                // Prevenir el scroll nativo del documento
-                document.body.style.overflow = 'hidden';
-                document.body.style.position = 'fixed';
-                document.body.style.width = '100%';
-                document.body.style.height = '100%';
-
-                // Asegurar que no haya scroll nativo
-                document.documentElement.style.overflow = 'hidden';
-            }
-
-            // Función para navegar suavemente a una sección específica
-            function scrollToSection(sectionId) {
-                let targetPosition = 0;
-
-                if (sectionId === 'works') {
-                    targetPosition = initialTop;
-                } else if (sectionId === 'about') {
-                    const aboutOffset = initialTop + capa.offsetHeight;
-                    targetPosition = aboutOffset;
-                }
-
-                targetPosition = Math.min(Math.max(targetPosition, 0), maxScroll);
-                targetScroll = targetPosition;
-            }
-
-            // Manejar navegación desde URL
-            function handleHashNavigation() {
-                const hash = window.location.hash;
-                if (hash) {
-                    const sectionId = hash.substring(1);
-                    setTimeout(() => {
-                        scrollToSection(sectionId);
-                    }, 100);
-                }
-            }
-
-            // Actualizar la URL mientras se hace scroll
-            function updateURLHash() {
-                const now = Date.now();
-                if (now - lastSectionUpdate < 500) return;
-
-                const scrollRatio = currentScroll / maxScroll;
-                let newHash = '';
-
-                if (scrollRatio < 0.1) {
-                    newHash = '';
-                } else if (scrollRatio < 0.7) {
-                    newHash = '#works';
-                } else {
-                    newHash = '#about';
-                }
-
-                const currentHash = window.location.hash;
-                if (currentHash !== newHash) {
-                    const newURL = window.location.pathname + window.location.search + newHash;
-                    history.replaceState(null, '', newURL);
-                    lastSectionUpdate = now;
-                }
-            }
-
-            function updateTextEffect(scroll) {
-                const opacity = Math.max(0, 1 - (scroll / maxScroll));
-                const translateY = -scroll * 0.1;
-
-                texto.style.opacity = opacity;
-                texto.style.transform = `translateY(${translateY}px)`;
-            }
-
-            function updateAboutOverlayPosition() {
-                const aboutOffset = initialTop + capa.offsetHeight;
-                const newTop = aboutOffset - currentScroll;
-
-                // Simplificar para móviles - siempre mostrar cuando corresponda
-                aboutOverlay.style.top = `${newTop}px`;
-                aboutOverlay.style.display = 'block';
-            }
-
-            function updateMaxScroll() {
-                const capaHeight = capa.offsetHeight;
-                const aboutContent = document.querySelector('.about-content');
-
-                if (!aboutContent) {
-                    console.warn('about-content no encontrado');
-                    return;
-                }
-
-                const viewportHeight = window.innerHeight;
-                const aboutHeight = aboutContent.offsetHeight;
-
-                // Cálculo simplificado y más confiable
-                const totalHeight = initialTop + capaHeight + aboutHeight;
-                maxScroll = Math.max(0, totalHeight - viewportHeight + 200); // Margen adicional
-
-                if (targetScroll > maxScroll) {
-                    targetScroll = maxScroll;
-                }
-
-                console.log('MaxScroll:', maxScroll, 'About height:', aboutHeight);
-            }
-
-            // Función para detectar color de fondo y cambiar hamburguesa
-            function updateHamburgerColor() {
-                const capaRect = capa.getBoundingClientRect();
-                if (capaRect.top <= 100 && capaRect.bottom >= 0) {
-                    hamburguesa.classList.add('fondo-blanco');
-                } else {
-                    hamburguesa.classList.remove('fondo-blanco');
-                }
-            }
-
-            // Función para manejar la visibilidad del menú hamburguesa durante scroll
-            function handleHamburgerVisibility() {
-                const scrollDelta = Math.abs(currentScroll - lastScrollPosition);
-                updateHamburgerColor();
-
-                if (scrollDelta > 5) {
-                    if (!isScrolling) {
-                        isScrolling = true;
-                        if (menuHorizontal.classList.contains('activo')) {
-                            hamburguesa.classList.remove('activo');
-                            menuHorizontal.classList.remove('activo');
-                        }
-                        hamburguesa.style.opacity = '0';
-                        hamburguesa.style.pointerEvents = 'none';
+    <script>document.addEventListener('DOMContentLoaded', () => {
+            const a = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1), b =
+                    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || a, c = document.getElementById('capaBlanca'), d =
+                    document.getElementById('capaTexto').querySelector('h2'), e = document.querySelector('.about-overlay'), f =
+                    document.querySelectorAll('.filtros button'), g = document.querySelectorAll('.mosaico .item'), h = 1200; let i = 0,
+                        j = 0, k = 0; const l = 0.1, m = document.getElementById('hamburguesa'), n =
+                            document.getElementById('menuHorizontal'); let o, p = !1, q = 0, r = 0, s = !0; b && (document.body.style.overflow =
+                                'hidden', document.body.style.position = 'fixed', document.body.style.width = '100%', document.body.style.height =
+                                '100%', document.documentElement.style.overflow = 'hidden'); function t(a) {
+                                    let b = 0; 'works' === a ? b = h :
+                                        'about' === a && (b = h + c.offsetHeight), b = Math.min(Math.max(b, 0), i), j = b
+                                } function u() {
+                                    if (s) {
+                                        if
+                                            (window.location.hash) {
+                                            const a = window.location.pathname + window.location.search; history.replaceState(null, '',
+                                                a)
+                                        } return s = !1, void 0
+                                    } const a = window.location.hash; a && setTimeout(() => { t(a.substring(1)) }, 100)
+                                }
+            function v() {
+                const a = Date.now(); if (a - r < 500) return; const b = k / i; let c = ''; b < 0.1 ? c = '' : b < 0.7 ?
+                    c = '#works' : c = '#about'; const d = window.location.hash; if (d !== c) {
+                        const a = window.location.pathname +
+                            window.location.search + c; history.replaceState(null, '', a), r = a
                     }
-
-                    clearTimeout(scrollTimeout);
-                    scrollTimeout = setTimeout(() => {
-                        isScrolling = false;
-                        hamburguesa.style.opacity = '1';
-                        hamburguesa.style.pointerEvents = 'auto';
-                    }, 150);
-                }
-
-                lastScrollPosition = currentScroll;
-            }
-
-            let animationId;
-            function smoothScroll() {
-                if (Math.abs(targetScroll - currentScroll) > 0.1) {
-                    currentScroll += (targetScroll - currentScroll) * ease;
-                    currentScroll = Math.min(Math.max(currentScroll, 0), maxScroll);
-
-                    const newTop = initialTop - currentScroll;
-                    capa.style.top = `${newTop}px`;
-                    updateTextEffect(currentScroll);
-                    updateAboutOverlayPosition();
-                    updateURLHash();
-                    handleHamburgerVisibility();
-                }
-
-                animationId = requestAnimationFrame(smoothScroll);
-            }
-
-            // Desktop wheel event
-            function onWheel(e) {
-                e.preventDefault();
-                const delta = e.deltaY || e.detail || e.wheelDelta;
-                targetScroll += delta;
-                targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
-            }
-
-            // REESCRITO: Manejo de touch completamente nuevo para móviles
-            let touchStartY = 0;
-            let touchStartX = 0;
-            let isVerticalScroll = false;
-            let touchStartTime = 0;
-            let lastTouchY = 0;
-            let velocity = 0;
-            let isTouchActive = false;
-
-            // Prevenir eventos de scroll en móviles
-            function preventScrolling(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-            }
-
-            if (isMobile) {
-                // Prevenir todos los eventos de scroll nativo
-                document.addEventListener('touchmove', preventScrolling, { passive: false });
-                document.addEventListener('touchforcechange', preventScrolling, { passive: false });
-                document.addEventListener('wheel', preventScrolling, { passive: false });
-                document.addEventListener('scroll', preventScrolling, { passive: false });
-
-                // Handlers específicos para nuestro scroll customizado
-                document.addEventListener('touchstart', (e) => {
-                    if (e.touches.length === 1) {
-                        touchStartY = e.touches[0].clientY;
-                        touchStartX = e.touches[0].clientX;
-                        lastTouchY = touchStartY;
-                        touchStartTime = Date.now();
-                        velocity = 0;
-                        isTouchActive = true;
-                        isVerticalScroll = false;
+            } function w(a) {
+                const b = Math.max(0, 1 -
+                    a / i), c = -a * 0.1; d.style.opacity = b, d.style.transform = `translateY(${c}px)`
+            } function x() {
+                const a = h +
+                    c.offsetHeight, b = a - k; e.style.top = `${b}px`, e.style.display = 'block'
+            } function y() {
+                const a = c.offsetHeight,
+                    b = document.querySelector('.about-content'); if (!b) return; const d = window.innerHeight, f = b.offsetHeight, g = h +
+                        a + f; i = Math.max(0, g - d), j > i && (j = i)
+            } function z() {
+                const a = c.getBoundingClientRect(); a.top
+                    <= 100 && a.bottom >= 0 ? m.classList.add('fondo-blanco') : m.classList.remove('fondo-blanco')
+            } function A() {
+                const a = Math.abs(k - q); z(), a > 5 && (p || (p = !0, n.classList.contains('activo') &&
+                    (m.classList.remove('activo'), n.classList.remove('activo')), m.style.opacity = '0', m.style.pointerEvents =
+                    'none'), clearTimeout(o), o = setTimeout(() => {
+                        p = !1, m.style.opacity = '1', m.style.pointerEvents =
+                            'auto'
+                    }, 150)), q = k
+            } let B; function C() {
+                Math.abs(j - k) > 0.1 && (k += (j - k) * l, k =
+                    Math.min(Math.max(k, 0), i), c.style.top = `${h - k}px`, w(k), x(), v(), A()), B = requestAnimationFrame(C)
+            } function D(a) {
+                a.preventDefault(); const b = a.deltaY || a.detail || a.wheelDelta; j += b, j =
+                    Math.min(Math.max(j, 0), i)
+            } let E = 0, F = 0, G = !1, H = 0, I = 0, J = 0, K = !1; function L(a) {
+                a.preventDefault(), a.stopPropagation(); return !1
+            } b ? (document.addEventListener('touchmove', L, {
+                passive: !1
+            }), document.addEventListener('touchforcechange', L, { passive: !1 }),
+                document.addEventListener('wheel', L, { passive: !1 }), document.addEventListener('scroll', L, {
+                    passive: !1
+                }), document.addEventListener('touchstart', a => {
+                    1 === a.touches.length && (E = a.touches[0].clientY, F =
+                        a.touches[0].clientX, I = E, H = Date.now(), J = 0, K = !0, G = !1)
+                }, { passive: !0 }),
+                document.addEventListener('touchmove', a => {
+                    if (1 === a.touches.length && K) {
+                        const b =
+                            a.touches[0].clientY, c = a.touches[0].clientX, d = Math.abs(b - E), e = Math.abs(c - F); !G && (d > 10 || e
+                                > 10) && (G = d > e), G && (a.preventDefault(), a.stopPropagation()); const f = Date.now(), g = f - H; if (g
+                                    > 0) { const a = I - b; J = a / g, j += 3 * a, j = Math.min(Math.max(j, 0), i), I = b, H = f }
                     }
-                }, { passive: true });
+                }, {
+                    passive: !1
+                }), document.addEventListener('touchend', a => {
+                    K && G && Math.abs(J) > 0.5 && (j += 200 * J, j
+                        = Math.min(Math.max(j, 0), i)), K = !1, G = !1
+                }, { passive: !0 }), C()) : (window.addEventListener('wheel',
+                    D, { passive: !1 }), C()), f.forEach(a => {
+                        a.addEventListener('click', b => {
+                            b.preventDefault(); const c =
+                                a.getAttribute('data-filtro'); f.forEach(a => a.classList.remove('activo')), a.classList.add('activo'),
+                                    g.forEach(a => {
+                                        const b = a.getAttribute('data-categoria'); 'todos' === c || b === c ?
+                                            a.classList.remove('hidden') : a.classList.add('hidden')
+                                    }), setTimeout(() => { y() }, 100)
+                        })
+                    }); const M =
+                        document.getElementById('modal'), N = M.querySelector('iframe'), O = document.getElementById('modalTitle'),
+                        P = document.getElementById('modalDescription'), Q = M.querySelector('.close-btn'); g.forEach(a => {
+                            let c =
+                                { x: 0, y: 0 }, d = !1, e = 0; const f = a => {
+                                    c.x = a.touches[0].clientX, c.y = a.touches[0].clientY, d =
+                                        !1, e = Date.now()
+                                }, g = a => {
+                                    if (!d) {
+                                        const b = Math.abs(a.touches[0].clientX - c.x), e =
+                                            Math.abs(a.touches[0].clientY - c.y); (b > 15 || e > 15) && (d = !0)
+                                    }
+                                }, h = f => {
+                                    if (b) {
+                                        const a =
+                                            Date.now() - e; if (d || a > 500) return
+                                    } f.preventDefault(), f.stopPropagation(); const g =
+                                        a.getAttribute('data-video'), h = a.getAttribute('data-line1'), i = a.getAttribute('data-line2'); N.src = g
+                                            + '?autoplay=1&title=0&byline=0&portrait=0', O.textContent = h, P.textContent = i,
+                                            M.classList.add('active'), b ? (document.body.style.position = 'fixed', document.body.style.top = `-${k}px`)
+                                                : document.body.style.overflow = 'hidden', B && cancelAnimationFrame(B)
+                                }; b ?
+                                    (a.addEventListener('touchstart', f, { passive: !0 }), a.addEventListener('touchmove', g, { passive: !0 }),
+                                        a.addEventListener('touchend', h, { passive: !1 })) : a.addEventListener('click', h)
+                        }); const R = () => {
+                            M.classList.remove('active'), N.src = '', b ? (document.body.style.position = '', document.body.style.top =
+                                '', document.body.style.overflow = 'hidden') : document.body.style.overflow = '', C()
+                        };
+            Q.addEventListener('click', R), M.addEventListener('click', a => { a.target === M && R() }),
+                window.addEventListener('keydown', a => { 'Escape' === a.key && M.classList.contains('active') && R() }),
+                m.addEventListener('click', a => {
+                    a.preventDefault(), a.stopPropagation(), p ||
+                        (m.classList.toggle('activo'), n.classList.toggle('activo'))
+                }); document.querySelectorAll('.menu-horizontal').forEach(a => {
+                    a.addEventListener('click', function (b) {
+                        const c = this.getAttribute('href'); c &&
+                            c.startsWith('#') && (b.preventDefault(), t(c.substring(1)), m.classList.remove('activo'),
+                                n.classList.remove('activo'))
+                    })
+                }), document.addEventListener('click', function (a) {
+                    m.contains(a.target)
+                        || n.contains(a.target) || (m.classList.remove('activo'), n.classList.remove('activo'))
+                }),
+                    m.style.transition = 'opacity 0.3s ease, transform 0.3s ease', u(), window.addEventListener('hashchange',
+                        u), window.addEventListener('resize', () => { y(), z() }), z(), y()
+        });</script>
 
-                document.addEventListener('touchmove', (e) => {
-                    if (e.touches.length === 1 && isTouchActive) {
-                        const touchY = e.touches[0].clientY;
-                        const touchX = e.touches[0].clientX;
-                        const deltaY = Math.abs(touchY - touchStartY);
-                        const deltaX = Math.abs(touchX - touchStartX);
-
-                        // Determinar si es scroll vertical
-                        if (!isVerticalScroll && (deltaY > 10 || deltaX > 10)) {
-                            isVerticalScroll = deltaY > deltaX;
-                        }
-
-                        if (isVerticalScroll) {
-                            const currentTime = Date.now();
-                            const timeDelta = currentTime - touchStartTime;
-
-                            if (timeDelta > 0) {
-                                const scrollDelta = lastTouchY - touchY;
-                                velocity = scrollDelta / timeDelta;
-
-                                // Aplicar scroll con sensibilidad ajustada
-                                targetScroll += scrollDelta * 3; // Más sensible para móviles
-                                targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
-
-                                lastTouchY = touchY;
-                                touchStartTime = currentTime;
-                            }
-
-                            // Prevenir scroll nativo
-                            e.preventDefault();
-                            e.stopPropagation();
-                        }
-                    }
-                }, { passive: false });
-
-                document.addEventListener('touchend', (e) => {
-                    if (isTouchActive && isVerticalScroll) {
-                        // Aplicar momentum
-                        if (Math.abs(velocity) > 0.5) {
-                            targetScroll += velocity * 200; // Momentum más fuerte
-                            targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
-                        }
-                    }
-
-                    isTouchActive = false;
-                    isVerticalScroll = false;
-                }, { passive: true });
-
-                // Iniciar smooth scroll para móviles
-                smoothScroll();
-            } else {
-                // Desktop
-                window.addEventListener('wheel', onWheel, { passive: false });
-                smoothScroll();
-            }
-
-            // Filtros - sin cambios
-            botonesFiltro.forEach(boton => {
-                boton.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const filtro = boton.getAttribute('data-filtro');
-
-                    botonesFiltro.forEach(btn => btn.classList.remove('activo'));
-                    boton.classList.add('activo');
-
-                    items.forEach(item => {
-                        const categoria = item.getAttribute('data-categoria');
-                        if (filtro === 'todos' || categoria === filtro) {
-                            item.classList.remove('hidden');
-                        } else {
-                            item.classList.add('hidden');
-                        }
-                    });
-
-                    setTimeout(() => {
-                        updateMaxScroll();
-                    }, 100);
-                });
-            });
-
-            // Modal logic mejorado
-            const modal = document.getElementById('modal');
-            const iframe = modal.querySelector('iframe');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDescription = document.getElementById('modalDescription');
-            const closeBtn = modal.querySelector('.close-btn');
-
-            items.forEach(item => {
-                let touchStartPos = { x: 0, y: 0 };
-                let touchMoved = false;
-                let touchStartTimestamp = 0;
-
-                const handleTouchStart = (e) => {
-                    touchStartPos.x = e.touches[0].clientX;
-                    touchStartPos.y = e.touches[0].clientY;
-                    touchMoved = false;
-                    touchStartTimestamp = Date.now();
-                };
-
-                const handleTouchMove = (e) => {
-                    if (!touchMoved) {
-                        const deltaX = Math.abs(e.touches[0].clientX - touchStartPos.x);
-                        const deltaY = Math.abs(e.touches[0].clientY - touchStartPos.y);
-                        if (deltaX > 15 || deltaY > 15) { // Aumentar tolerancia
-                            touchMoved = true;
-                        }
-                    }
-                };
-
-                const openModal = (e) => {
-                    if (isMobile) {
-                        const touchDuration = Date.now() - touchStartTimestamp;
-                        if (touchMoved || touchDuration > 500) {
-                            return;
-                        }
-                    }
-
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    const videoURL = item.getAttribute('data-video');
-                    const title = item.getAttribute('data-line1');
-                    const description = item.getAttribute('data-line2');
-
-                    iframe.src = videoURL + '?autoplay=1&title=0&byline=0&portrait=0';
-                    modalTitle.textContent = title;
-                    modalDescription.textContent = description;
-                    modal.classList.add('active');
-
-                    // Mejorar comportamiento del modal en móviles
-                    if (isMobile) {
-                        document.body.style.position = 'fixed';
-                        document.body.style.top = `-${currentScroll}px`;
-                    } else {
-                        document.body.style.overflow = 'hidden';
-                    }
-
-                    if (animationId) {
-                        cancelAnimationFrame(animationId);
-                    }
-                };
-
-                if (isMobile) {
-                    item.addEventListener('touchstart', handleTouchStart, { passive: true });
-                    item.addEventListener('touchmove', handleTouchMove, { passive: true });
-                    item.addEventListener('touchend', openModal, { passive: false });
-                } else {
-                    item.addEventListener('click', openModal);
-                }
-            });
-
-            const closeModal = () => {
-                modal.classList.remove('active');
-                iframe.src = '';
-
-                if (isMobile) {
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.overflow = 'hidden'; // Mantener overflow hidden en móviles
-                } else {
-                    document.body.style.overflow = '';
-                }
-
-                smoothScroll();
-            };
-
-            closeBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-
-            window.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && modal.classList.contains('active')) {
-                    closeModal();
-                }
-            });
-
-            // Hamburger menu
-            hamburguesa.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
-                if (!isScrolling) {
-                    hamburguesa.classList.toggle('activo');
-                    menuHorizontal.classList.toggle('activo');
-                }
-            });
-
-            // Navegación suave - enlaces del menú
-            const enlaces = document.querySelectorAll('.menu-horizontal a');
-            enlaces.forEach(enlace => {
-                enlace.addEventListener('click', function (e) {
-                    const href = this.getAttribute('href');
-
-                    if (href && href.startsWith('#')) {
-                        e.preventDefault();
-
-                        const sectionId = href.substring(1);
-                        scrollToSection(sectionId);
-
-                        hamburguesa.classList.remove('activo');
-                        menuHorizontal.classList.remove('activo');
-                    }
-                });
-            });
-
-            // Cerrar menú al hacer clic fuera
-            document.addEventListener('click', function (e) {
-                if (!hamburguesa.contains(e.target) && !menuHorizontal.contains(e.target)) {
-                    hamburguesa.classList.remove('activo');
-                    menuHorizontal.classList.remove('activo');
-                }
-            });
-
-            // Estilos de transición
-            hamburguesa.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-
-            // Navegación - Event listeners
-            handleHashNavigation();
-            window.addEventListener('hashchange', handleHashNavigation);
-
-            // Inicialización
-            window.addEventListener('resize', () => {
-                updateMaxScroll();
-                updateHamburgerColor();
-            });
-
-            updateHamburgerColor();
-            updateMaxScroll();
-
-            // Debug para móviles
-            if (isMobile) {
-                console.log('Modo móvil activado:', isIOS ? 'iOS' : 'Android');
-                console.log('Scroll nativo deshabilitado');
-                console.log('About overlay:', !!aboutOverlay);
-
-                // Verificar cada 2 segundos el estado del scroll
-                setInterval(() => {
-                    console.log('Current scroll:', currentScroll, 'Max scroll:', maxScroll);
-                }, 2000);
-            }
-        });
-    </script>
 </body>
 
 </html>
