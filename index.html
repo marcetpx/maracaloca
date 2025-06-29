@@ -2,7 +2,6 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet" />
@@ -124,7 +123,7 @@
             color: whitesmoke;
             opacity: 1;
             transform: translateY(0);
-            transition: opacity 0.2s, transform 0.2s;
+            transition: opacity 0.1s, transform 0.1s;
             font-family: Avalon, Consolas, 'Courier New', monospace;
         }
 
@@ -264,17 +263,12 @@
             }
         }
 
-        .capa-texto.hidden {
-            visibility: hidden;
-        }
-
         .about-overlay {
             display: flex;
             justify-content: flex-start;
             padding: 100px 60px;
             position: absolute;
             z-index: 8;
-            background-color: transparent;
             width: 100%;
             background-color: #000;
         }
@@ -370,39 +364,27 @@
             background-color: white;
             display: block;
             transition: all 0.3s ease;
-            border-radius: 2px;
+            /*             border-radius: 2px;
+ */
             transform-origin: center;
         }
 
-        /* Hamburguesa en fondo blanco */
-        .hamburguesa.fondo-blanco span {
-            background-color: #ccc;
-        }
-
-        /* Hover effect para fondo blanco */
-        .hamburguesa.fondo-blanco:hover span {
-            background-color: #999;
-        }
-
-        /* Animación cuando el menú está activo - transformación a aspa (X) rotativa */
         .hamburguesa.activo {
             animation: rotateX 0.6s ease-in-out forwards;
         }
 
         .hamburguesa.activo span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
+            transform: rotate(45deg) translate(5px, 5px);
         }
 
         .hamburguesa.activo span:nth-child(2) {
             opacity: 0;
-            transform: scaleX(0);
         }
 
         .hamburguesa.activo span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
+            transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* Keyframes para la rotación del aspa */
         @keyframes rotateX {
             0% {
                 transform: rotate(0deg);
@@ -413,69 +395,6 @@
             }
         }
 
-        /* Animación de vuelta cuando se desactiva */
-        .hamburguesa:not(.activo) {
-            animation: rotateBack 0.6s ease-in-out forwards;
-        }
-
-        @keyframes rotateBack {
-            0% {
-                transform: rotate(180deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .menu-horizontal {
-            position: fixed;
-            top: 0px;
-            right: 15px;
-            /* Alineado con la hamburguesa */
-            height: 50px;
-            display: flex;
-            align-items: center;
-            gap: 30px;
-            padding: 37px 20px;
-            background: rgba(0, 0, 0, 0);
-            z-index: 2999;
-            transform: translateX(100%);
-            /* Ajustado para que salga completamente fuera */
-            transition: transform 0.4s ease-in-out;
-            border-bottom-left-radius: 10px;
-            backdrop-filter: blur(4px);
-            transform-origin: right center;
-            /* Origen de transformación alineado a la derecha */
-        }
-
-        /* Menú horizontal cuando está activo */
-        .menu-horizontal.activo {
-            transform: translateX(0);
-        }
-
-        .menu-horizontal a {
-            color: white;
-            text-decoration: none;
-            font-family: Avalon, Consolas, monospace;
-            font-size: 1.1rem;
-            white-space: nowrap;
-            transition: color 0.3s;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Keyframes para la rotación del aspa */
-        @keyframes rotateX {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(180deg);
-            }
-        }
-
-        /* Animación de vuelta cuando se desactiva */
         .hamburguesa:not(.activo) {
             animation: rotateBack 0.6s ease-in-out forwards;
         }
@@ -507,7 +426,6 @@
             backdrop-filter: blur(4px);
         }
 
-        /* Menú horizontal cuando está activo */
         .menu-horizontal.activo {
             transform: translateX(0);
         }
@@ -522,7 +440,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Específico para iOS */
         @supports (-webkit-touch-callout: none) {
             body {
                 -webkit-user-select: none;
@@ -534,7 +451,6 @@
             }
         }
 
-        /* Optimización para dispositivos móviles */
         @media (max-width: 768px) {
             .capa-blanca {
                 padding: 20px;
@@ -549,15 +465,11 @@
             }
         }
 
-
-
-
-
         .scroll-stop-line {
             position: fixed;
             top: -50vh;
             left: -100vw;
-            width: 10px;
+            width: 20px;
             height: 200vh;
             background: white;
             transform: rotate(45deg);
@@ -596,17 +508,14 @@
         <span></span>
         <span></span>
     </div>
-
     <div class="menu-horizontal" id="menuHorizontal">
         <a href="#works">WORKS</a>
         <a href="#about">ABOUT</a>
         <a href="#about"> / </a>
     </div>
-
     <div class="capa-texto" id="capaTexto">
         <h2>VICTOR PALOMO</h2>
     </div>
-
     <div class="capa-blanca" id="capaBlanca">
         <div class="filtros">
             <button data-filtro="todos" class="activo">ALL</button>
@@ -652,13 +561,11 @@
             </div>
         </div>
     </div>
-
     <div class="about-overlay">
         <div class="about-content">
-            <div class="crt-overlay"></div>
             <h2>ABOUT ME</h2>
-            <p>Maracaloca es una proyecto audiovisual centrado en la creatividad, la imagen y el ritmo. Este
-                espacio es una muestra de mi trabajo.</p>
+            <p>Maracaloca es una proyecto audiovisual centrado en la creatividad, la imagen y el ritmo. Este espacio es
+                una muestra de mi trabajo.</p>
             <br>
             <br>
             <br>
@@ -666,9 +573,10 @@
             <p><a href="tel:+34123456789" class="telefono">+ 34 123 456 789</a></p>
             <p># Radial, 27</p>
             <p># 08001 Barcelona</p>
+            <div class="crt-overlay"></div>
+
         </div>
     </div>
-
     <div class="modal" id="modal">
         <div class="modal-content">
             <button class="close-btn">&times;</button>
@@ -681,8 +589,9 @@
             </div>
         </div>
     </div>
+    <script>
 
-    <script>document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
             const a = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1), b =
                     /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || a, c = document.getElementById('capaBlanca'), d =
@@ -704,8 +613,8 @@
                                     } const a = window.location.hash; a && setTimeout(() => { t(a.substring(1)) }, 100)
                                 }
             function v() {
-                const a = Date.now(); if (a - r < 500) return; const b = k / i; let c = ''; b < 0.1 ? c = '' : b < 0.7 ?
-                    c = '#works' : c = '#about'; const d = window.location.hash; if (d !== c) {
+                const a = Date.now(); if (a - r < 500) return; const b = k / i; let c = ''; b < 0.1 ? c = '' : b < 0.7 ? c = '#works' :
+                    c = '#about'; const d = window.location.hash; if (d !== c) {
                         const a = window.location.pathname +
                             window.location.search + c; history.replaceState(null, '', a), r = a
                     }
@@ -719,11 +628,8 @@
                 const a = c.offsetHeight,
                     b = document.querySelector('.about-content'); if (!b) return; const d = window.innerHeight, f = b.offsetHeight, g = h +
                         a + f; i = Math.max(0, g - d), j > i && (j = i)
-            } function z() {
-                const a = c.getBoundingClientRect(); a.top
-                    <= 100 && a.bottom >= 0 ? m.classList.add('fondo-blanco') : m.classList.remove('fondo-blanco')
             } function A() {
-                const a = Math.abs(k - q); z(), a > 5 && (p || (p = !0, n.classList.contains('activo') &&
+                const a = Math.abs(k - q); a > 5 && (p || (p = !0, n.classList.contains('activo') &&
                     (m.classList.remove('activo'), n.classList.remove('activo')), m.style.opacity = '0', m.style.pointerEvents =
                     'none'), clearTimeout(o), o = setTimeout(() => {
                         p = !1, m.style.opacity = '1', m.style.pointerEvents =
@@ -797,29 +703,10 @@
                                 '', document.body.style.overflow = 'hidden') : document.body.style.overflow = '', C()
                         };
             Q.addEventListener('click', R), M.addEventListener('click', a => { a.target === M && R() }),
-                window.addEventListener('keydown', a => { 'Escape' === a.key && M.classList.contains('active') && R() }),
-                m.addEventListener('click', a => {
-                    a.preventDefault(), a.stopPropagation(), p ||
-                        (m.classList.toggle('activo'), n.classList.toggle('activo'))
-                }); document.querySelectorAll('.menu-horizontal').forEach(a => {
-                    a.addEventListener('click', function (b) {
-                        const c = this.getAttribute('href'); c &&
-                            c.startsWith('#') && (b.preventDefault(), t(c.substring(1)), m.classList.remove('activo'),
-                                n.classList.remove('activo'))
-                    })
-                }), document.addEventListener('click', function (a) {
-                    m.contains(a.target)
-                        || n.contains(a.target) || (m.classList.remove('activo'), n.classList.remove('activo'))
-                }),
-                    m.style.transition = 'opacity 0.3s ease, transform 0.3s ease', u(), window.addEventListener('hashchange',
-                        u), window.addEventListener('resize', () => { y(), z() }), z(), y()
+                window.addEventListener('keydown', a => { 'Escape' === a.key && M.classList.contains('active') && R() });
 
-
-
-            // Animación de línea al parar scroll
+            // Animación de línea al hacer click en hamburguesa
             const scrollStopLine = document.getElementById('scrollStopLine');
-            let scrollStopTimeout;
-            let isScrolling = false;
 
             function triggerScrollStopAnimation() {
                 scrollStopLine.classList.remove('animate');
@@ -828,39 +715,41 @@
                 }, 10);
             }
 
-            function handleScrollStop() {
-                clearTimeout(scrollStopTimeout);
+            // Event listener ÚNICO para la hamburguesa con animación y funcionalidad
+            m.addEventListener('click', a => {
+                a.preventDefault();
+                a.stopPropagation();
+                if (!p) {
+                    // Disparar animación al hacer click
+                    triggerScrollStopAnimation();
 
-                if (!isScrolling) {
-                    isScrolling = true;
+                    // Funcionalidad original del menú
+                    m.classList.toggle('activo');
+                    n.classList.toggle('activo');
                 }
+            });
 
-                scrollStopTimeout = setTimeout(() => {
-                    if (isScrolling) {
-                        triggerScrollStopAnimation();
-                        isScrolling = false;
-                    }
-                }, 150);
-            }
+            document.querySelectorAll('.menu-horizontal a').forEach(a => {
+                a.addEventListener('click', function (b) {
+                    const c = this.getAttribute('href'); c &&
+                        c.startsWith('#') && (b.preventDefault(), t(c.substring(1)), m.classList.remove('activo'),
+                            n.classList.remove('activo'))
+                })
+            });
 
-            // Agregar el listener en la función C() existente
-            function C() {
-                const prevK = k;
-                Math.abs(j - k) > 0.1 && (k += (j - k) * l, k =
-                    Math.min(Math.max(k, 0), i), c.style.top = `${h - k}px`, w(k), x(), v(), A());
+            document.addEventListener('click', function (a) {
+                m.contains(a.target)
+                    || n.contains(a.target) || (m.classList.remove('activo'), n.classList.remove('activo'))
+            });
 
-                // Detectar cuando el scroll se detiene
-                if (Math.abs(prevK - k) > 0.1) {
-                    handleScrollStop();
-                }
-
-                B = requestAnimationFrame(C);
-            }
-        });</script>
-
+            m.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            u();
+            window.addEventListener('hashchange', u);
+            window.addEventListener('resize', () => { y() });
+            y();
+        });
+    </script>
 </body>
-
 <div class="scroll-stop-line" id="scrollStopLine"></div>
-
 
 </html>
