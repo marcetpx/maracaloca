@@ -3,10 +3,22 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet" />
     <title>Maracaloca</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <meta name="msapplication-navbutton-color" content="#000000">
+    <meta name="apple-mobile-web-app-title" content="Maracaloca">
     <style>
+        @font-face {
+            font-family: 'Avalon';
+            src: url('Avalon.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -16,8 +28,9 @@
         html,
         body {
             height: 100%;
-            font-family: Menlo, Consolas, 'Courier New', monospace;
+            font-family: Avalon, Consolas, 'Courier New', monospace;
             overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
         }
 
         body::before {
@@ -36,7 +49,7 @@
         }
 
         .capa-blanca {
-            background-color: white;
+            background-color: black;
             min-height: 100vh;
             padding: 40px;
             box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
@@ -45,9 +58,11 @@
             align-items: center;
             gap: 40px;
             position: relative;
-            top: 800px;
+            top: 1200px;
             width: 100%;
             z-index: 10;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
 
         .mosaico {
@@ -67,6 +82,8 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             transition: opacity 0.3s ease, transform 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
         }
 
         .item img {
@@ -74,16 +91,76 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.3s ease;
         }
 
-        .item:hover img {
-            transform: scale(1.05);
+        .item:hover img,
+        .item:active img {
+            filter: grayscale(0%);
         }
 
         .item.hidden {
             display: none;
         }
+
+        .hover-title {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            padding: 10px;
+        }
+
+        .item:hover .hover-title {
+            opacity: 1;
+        }
+
+        /* --- GLITCH EFFECT --- */
+        .glitch {
+            position: relative;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            animation: glitch 1s infinite;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            overflow: hidden;
+            color: white;
+            background: transparent;
+            clip: rect(0, 900px, 0, 0);
+        }
+
+        .glitch::before {
+            animation: glitchTop 1s infinite linear alternate-reverse;
+            color: #f0f;
+        }
+
+        .glitch::after {
+            animation: glitchBottom 1s infinite linear alternate-reverse;
+            color: #0ff;
+        }
+
+
+
+
 
         .capa-texto {
             position: fixed;
@@ -102,17 +179,11 @@
         .capa-texto h2 {
             font-size: 5rem;
             font-weight: bold;
-            color: #ffff00;
-            /* Amarillo flúor */
-            /*     text-shadow:
-                0 0 5px #ffff00,
-                0 0 10px #ffff00,
-                0 0 20px #ffff00,
-                0 0 40px #ffff00; */
+            color: whitesmoke;
             opacity: 1;
             transform: translateY(0);
-            transition: opacity 0.2s, transform 0.2s;
-            font-family: Menlo, Consolas, 'Courier New', monospace;
+            transition: opacity 0.1s, transform 0.1s;
+            font-family: Avalon, Consolas, 'Courier New', monospace;
         }
 
         .filtros {
@@ -124,26 +195,33 @@
         }
 
         .filtros button {
-            background-color: black;
-            /*             border: 2px solid #ffff00; */
-            padding: 10px 20px;
-            font-family: 'Menlo', Consolas, monospace;
+            all: unset;
+            font-family: 'Avalon', Consolas, monospace;
             font-size: 1.2rem;
-            color: #ffff00;
-            /* Amarillo flúor */
-            /*   text-shadow:
-                0 0 5px #ffff00,
-                0 0 10px #ffff00,
-                0 0 20px #ffff00,
-                0 0 40px #ffff00; */
-
+            color: whitesmoke;
             cursor: pointer;
-
+            position: relative;
+            padding-bottom: 4px;
+            transition: color 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .filtros button:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 8px rgba(255, 255, 0, 0.4);
+        .filtros button::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            height: 2px;
+            width: calc(100% + 2px);
+            background-color: whitesmoke;
+            transform: translateX(-50%) scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease;
+        }
+
+        .filtros button.activo::after {
+            width: 100%;
+            transform: translateX(-50%) scaleX(1);
         }
 
         .modal {
@@ -172,7 +250,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            border: 3px solid #ffff00;
+            border: 3px solid whitesmoke;
             box-sizing: border-box;
             position: relative;
             z-index: 1010;
@@ -196,7 +274,7 @@
 
         .modal-text {
             padding: 15px 20px;
-            color: #ffff00;
+            color: whitesmoke;
             background: #222;
         }
 
@@ -212,10 +290,11 @@
             background: transparent;
             border: none;
             font-size: 2rem;
-            color: #ffff00;
+            color: whitesmoke;
             cursor: pointer;
             font-family: monospace;
             z-index: 1020;
+            -webkit-tap-highlight-color: transparent;
         }
 
         @media (max-width: 1000px) {
@@ -236,19 +315,11 @@
                 max-height: 90vh;
                 border-width: 2px;
             }
-        }
 
-        @media (max-width: 700px) {
             .capa-texto h2 {
                 font-size: 2rem;
-                /* o ajusta hasta que quepa en una sola línea */
                 letter-spacing: 0.2rem;
             }
-        }
-
-
-        .capa-texto.hidden {
-            visibility: hidden;
         }
 
         .about-overlay {
@@ -256,146 +327,331 @@
             justify-content: flex-start;
             padding: 100px 60px;
             position: absolute;
-            /* <-- cambia de relative a absolute */
             z-index: 8;
-            background-color: transparent;
             width: 100%;
             background-color: #000;
-
         }
 
         .about-content {
             max-width: 460px;
-            color: #ffff00;
-            /* Amarillo flúor */
-            /*  text-shadow:
-                0 0 5px #ffff00,
-                0 0 20px #ffff00,
-                0 0 40px #ffff00; */
-            font-family: Menlo, Consolas, 'Courier New', monospace;
+            color: whitesmoke;
+            font-family: Avalon, Consolas, 'Courier New', monospace;
             text-align: left;
-            /* padding: 50px;
-            margin-left: -40px; */
             padding-bottom: 100px;
         }
-
 
         .about-content h2 {
             font-size: 2.5rem;
             margin-bottom: 15px;
-            font-family: Menlo, Consolas, 'Courier New', monospace;
-
+            font-family: Avalon, Consolas, 'Courier New', monospace;
         }
 
         .about-content p {
             font-size: 1.2rem;
             line-height: 1.6;
-            font-family: Menlo, Consolas, 'Courier New', monospace;
-
-        }
-
-        .waves {
-            width: 100%;
-            height: 5%;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            background-image: url('images/lines.gif');
-
+            font-family: Avalon, Consolas, 'Courier New', monospace;
         }
 
         body {
             scrollbar-width: none;
-            /* Firefox */
             -ms-overflow-style: none;
-            /* IE y Edge */
         }
 
         body::-webkit-scrollbar {
             display: none;
-            /* Chrome, Safari y Opera */
         }
 
         .telefono {
-            color: #ffff00 !important;
+            color: whitesmoke !important;
             text-decoration: none !important;
             -webkit-tap-highlight-color: transparent;
-            /* para eliminar highlight al tocar */
             cursor: pointer;
-            font-family: Menlo, Consolas, 'Courier New', monospace;
+            font-family: Avalon, Consolas, 'Courier New', monospace;
         }
 
-        /* Para iOS evitar el estilo de detección automática */
         a[href^="tel:"] {
-            color: #ffff00 !important;
+            color: whitesmoke !important;
             text-decoration: none !important;
-            -webkit-text-fill-color: #ffff00 !important;
-            /* fuerza color en iOS Safari */
+            -webkit-text-fill-color: whitesmoke !important;
+        }
+
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            pointer-events: none;
+            background-image:
+                repeating-linear-gradient(to bottom,
+                    rgba(255, 255, 255, 0.1),
+                    rgba(255, 255, 255, 0.1) 2px,
+                    rgba(0, 0, 0, 0.1) 2px,
+                    rgba(0, 0, 0, 0.1) 5px),
+                repeating-linear-gradient(to right,
+                    rgba(255, 255, 255, 0.025),
+                    rgba(255, 255, 255, 0.025) 1px,
+                    transparent 1px,
+                    transparent 2.5px);
+            animation: flicker 1s infinite;
+            mix-blend-mode: screen;
+            filter: brightness(1.2) contrast(1.3);
+            opacity: 0.35;
+        }
+
+        .hamburguesa {
+            position: fixed;
+            top: 21px;
+            right: 15px;
+            z-index: 3000;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            gap: 5px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .hamburguesa span {
+            width: 26px;
+            height: 3px;
+            background-color: white;
+            display: block;
+            transition: all 0.3s ease;
+            /*             border-radius: 2px;
+ */
+            transform-origin: center;
+        }
+
+        .hamburguesa.activo {
+            animation: rotateX 0.6s ease-in-out forwards;
+        }
+
+        .hamburguesa.activo span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburguesa.activo span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburguesa.activo span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        @keyframes rotateX {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(180deg);
+            }
+        }
+
+        .hamburguesa:not(.activo) {
+            animation: rotateBack 0.6s ease-in-out forwards;
+        }
+
+        @keyframes rotateBack {
+            0% {
+                transform: rotate(180deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .menu-horizontal {
+            position: fixed;
+            top: 0;
+            right: 55px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 37px 20px;
+            background: rgba(0, 0, 0, 0);
+            z-index: 2999;
+            transform: translateX(150%);
+            transition: transform 0.4s ease-in-out;
+            border-bottom-left-radius: 10px;
+            backdrop-filter: blur(4px);
+        }
+
+        .menu-horizontal.activo {
+            transform: translateX(0);
+        }
+
+        .menu-horizontal a {
+            color: white;
+            text-decoration: none;
+            font-family: Avalon, Consolas, monospace;
+            font-size: 1.1rem;
+            white-space: nowrap;
+            transition: color 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            body {
+                -webkit-user-select: none;
+                user-select: none;
+            }
+
+            .item {
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .capa-blanca {
+                padding: 20px;
+            }
+
+            .about-overlay {
+                padding: 50px 30px;
+            }
+
+            .about-content {
+                max-width: 100%;
+            }
+        }
+
+        .scroll-stop-line {
+            position: fixed;
+            top: -50vh;
+            left: -100vw;
+            width: 20px;
+            height: 200vh;
+            background: white;
+            transform: rotate(45deg);
+            transform-origin: center;
+            z-index: 9998;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .scroll-stop-line.animate {
+            animation: sweepLine 0.2s ease-out forwards;
+        }
+
+        @keyframes sweepLine {
+            0% {
+                left: -100vw;
+                opacity: 1;
+            }
+
+            50% {
+                left: 50vw;
+                opacity: 0.8;
+            }
+
+            100% {
+                left: 200vw;
+                opacity: 0;
+            }
         }
     </style>
-
 </head>
 
 <body>
-    <div class="capa-texto" id="capaTexto">
-        <h2>M A R A C A L O C A</h2>
+    <div class="hamburguesa" id="hamburguesa">
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
-
+    <div class="menu-horizontal" id="menuHorizontal">
+        <a href="#works">WORKS</a>
+        <a href="#about">ABOUT</a>
+        <a href="#about"> / </a>
+    </div>
+    <div class="capa-texto" id="capaTexto">
+        <h2>VICTOR PALOMO</h2>
+    </div>
     <div class="capa-blanca" id="capaBlanca">
-        <div class="waves"></div>
         <div class="filtros">
-            <button data-filtro="todos">TODOS</button>
-            <button data-filtro="director">DIRECTOR</button>
-            <button data-filtro="productor">PRODUCTOR</button>
-            <button data-filtro="camara">CÁMARA</button>
+            <button data-filtro="todos" class="activo">ALL</button>
+            <button data-filtro="director">PRODUCER</button>
+            <button data-filtro="productor">FILMMAKER</button>
         </div>
         <div class="mosaico">
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&1" alt="Imagen 1" />
+                <img src="images/1.jpg" alt="Imagen 1" />
+                <div class="hover-title">
+                    <span class="glitch">CUPRA Connect</span>
+                </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="productor"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&2" alt="Imagen 2" />
+                <img src="images/2b.png" alt="Imagen 2" />
+                <div class="hover-title">
+                    <span class="glitch">House of talents</span>
+                </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&3" alt="Imagen 3" />
+                <img src="images/3.png" alt="Imagen 3" />
+                <div class="hover-title">
+                    <span class="glitch">Inconformistas</span>
+                </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&4" alt="Imagen 4" />
+                <img src="images/4.png" alt="Imagen 1" />
+                <div class="hover-title">
+                    <span class="glitch">May Day and stage</span>
+                </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&5" alt="Imagen 5" />
+                <img src="images/5.png" alt="Imagen 1" />
+                <div class="hover-title">
+                    <span class="glitch">Sonora Teaser</span>
+                </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&6" alt="Imagen 6" />
+                <img src="images/6.png" alt="Imagen 1" />
+                <div class="hover-title">
+                    <span class="glitch">Dewars</span>
+                </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="productor"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&7" alt="Imagen 7" />
+                <img src="images/9.png" alt="Imagen 1" />
+                <div class="hover-title">
+                    <span class="glitch">Martini</span>
+                </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&8" alt="Imagen 8" />
+                <img src="images/8.png" alt="Imagen 1" />
+                <div class="hover-title">
+                    <span class="glitch">Font Vella</span>
+                </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="https://picsum.photos/640/360?grayscale&9" alt="Imagen 9" />
+                <img src="images/7.png" alt="Imagen 1" />
+                <div class="hover-title">
+                    <span class="glitch">Logic</span>
+                </div>
             </div>
-
         </div>
     </div>
-
     <div class="about-overlay">
         <div class="about-content">
-            <div class="waves"></div>
             <h2>ABOUT ME</h2>
-            <p>Maracaloca es una proyecto audiovisual centrado en la creatividad, la imagen y el ritmo. Este
-                espacio
-                es una muestra de mi trabajo.</p>
+            <p>Maracaloca es una proyecto audiovisual centrado en la creatividad, la imagen y el ritmo. Este espacio es
+                una muestra de mi trabajo.</p>
             <br>
             <br>
             <br>
@@ -403,12 +659,10 @@
             <p><a href="tel:+34123456789" class="telefono">+ 34 123 456 789</a></p>
             <p># Radial, 27</p>
             <p># 08001 Barcelona</p>
-            <div class="waves"></div>
+            <div class="crt-overlay"></div>
+
         </div>
-
     </div>
-
-
     <div class="modal" id="modal">
         <div class="modal-content">
             <button class="close-btn">&times;</button>
@@ -421,161 +675,167 @@
             </div>
         </div>
     </div>
-
     <script>
+
         document.addEventListener('DOMContentLoaded', () => {
-            const capa = document.getElementById('capaBlanca');
-            const texto = document.getElementById('capaTexto').querySelector('h2');
-            const aboutOverlay = document.querySelector('.about-overlay');
-            const botonesFiltro = document.querySelectorAll('.filtros button');
-            const items = document.querySelectorAll('.mosaico .item');
+            const a = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1), b =
+                    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || a, c = document.getElementById('capaBlanca'), d =
+                    document.getElementById('capaTexto').querySelector('h2'), e = document.querySelector('.about-overlay'), f =
+                    document.querySelectorAll('.filtros button'), g = document.querySelectorAll('.mosaico .item'), h = 1200; let i = 0,
+                        j = 0, k = 0; const l = 0.1, m = document.getElementById('hamburguesa'), n =
+                            document.getElementById('menuHorizontal'); let o, p = !1, q = 0, r = 0, s = !0; b && (document.body.style.overflow =
+                                'hidden', document.body.style.position = 'fixed', document.body.style.width = '100%', document.body.style.height =
+                                '100%', document.documentElement.style.overflow = 'hidden'); function t(a) {
+                                    let b = 0; 'works' === a ? b = h :
+                                        'about' === a && (b = h + c.offsetHeight), b = Math.min(Math.max(b, 0), i), j = b
+                                } function u() {
+                                    if (s) {
+                                        if
+                                            (window.location.hash) {
+                                            const a = window.location.pathname + window.location.search; history.replaceState(null, '',
+                                                a)
+                                        } return s = !1, void 0
+                                    } const a = window.location.hash; a && setTimeout(() => { t(a.substring(1)) }, 100)
+                                }
+            function v() {
+                const a = Date.now(); if (a - r < 500) return; const b = k / i; let c = ''; b < 0.1 ? c = '' : b < 0.7 ? c = '#works' :
+                    c = '#about'; const d = window.location.hash; if (d !== c) {
+                        const a = window.location.pathname +
+                            window.location.search + c; history.replaceState(null, '', a), r = a
+                    }
+            } function w(a) {
+                const b = Math.max(0, 1 -
+                    a / i), c = -a * 0.1; d.style.opacity = b, d.style.transform = `translateY(${c}px)`
+            } function x() {
+                const a = h +
+                    c.offsetHeight, b = a - k; e.style.top = `${b}px`, e.style.display = 'block'
+            } function y() {
+                const a = c.offsetHeight,
+                    b = document.querySelector('.about-content'); if (!b) return; const d = window.innerHeight, f = b.offsetHeight, g = h +
+                        a + f; i = Math.max(0, g - d), j > i && (j = i)
+            } function A() {
+                const a = Math.abs(k - q); a > 5 && (p || (p = !0, n.classList.contains('activo') &&
+                    (m.classList.remove('activo'), n.classList.remove('activo')), m.style.opacity = '0', m.style.pointerEvents =
+                    'none'), clearTimeout(o), o = setTimeout(() => {
+                        p = !1, m.style.opacity = '1', m.style.pointerEvents =
+                            'auto'
+                    }, 150)), q = k
+            } let B; function C() {
+                Math.abs(j - k) > 0.1 && (k += (j - k) * l, k =
+                    Math.min(Math.max(k, 0), i), c.style.top = `${h - k}px`, w(k), x(), v(), A()), B = requestAnimationFrame(C)
+            } function D(a) {
+                a.preventDefault(); const b = a.deltaY || a.detail || a.wheelDelta; j += b, j =
+                    Math.min(Math.max(j, 0), i)
+            } let E = 0, F = 0, G = !1, H = 0, I = 0, J = 0, K = !1; function L(a) {
+                a.preventDefault(), a.stopPropagation(); return !1
+            } b ? (document.addEventListener('touchmove', L, {
+                passive: !1
+            }), document.addEventListener('touchforcechange', L, { passive: !1 }),
+                document.addEventListener('wheel', L, { passive: !1 }), document.addEventListener('scroll', L, {
+                    passive: !1
+                }), document.addEventListener('touchstart', a => {
+                    1 === a.touches.length && (E = a.touches[0].clientY, F =
+                        a.touches[0].clientX, I = E, H = Date.now(), J = 0, K = !0, G = !1)
+                }, { passive: !0 }),
+                document.addEventListener('touchmove', a => {
+                    if (1 === a.touches.length && K) {
+                        const b =
+                            a.touches[0].clientY, c = a.touches[0].clientX, d = Math.abs(b - E), e = Math.abs(c - F); !G && (d > 10 || e
+                                > 10) && (G = d > e), G && (a.preventDefault(), a.stopPropagation()); const f = Date.now(), g = f - H; if (g
+                                    > 0) { const a = I - b; J = a / g, j += 3 * a, j = Math.min(Math.max(j, 0), i), I = b, H = f }
+                    }
+                }, {
+                    passive: !1
+                }), document.addEventListener('touchend', a => {
+                    K && G && Math.abs(J) > 0.5 && (j += 200 * J, j
+                        = Math.min(Math.max(j, 0), i)), K = !1, G = !1
+                }, { passive: !0 }), C()) : (window.addEventListener('wheel',
+                    D, { passive: !1 }), C()), f.forEach(a => {
+                        a.addEventListener('click', b => {
+                            b.preventDefault(); const c =
+                                a.getAttribute('data-filtro'); f.forEach(a => a.classList.remove('activo')), a.classList.add('activo'),
+                                    g.forEach(a => {
+                                        const b = a.getAttribute('data-categoria'); 'todos' === c || b === c ?
+                                            a.classList.remove('hidden') : a.classList.add('hidden')
+                                    }), setTimeout(() => { y() }, 100)
+                        })
+                    }); const M =
+                        document.getElementById('modal'), N = M.querySelector('iframe'), O = document.getElementById('modalTitle'),
+                        P = document.getElementById('modalDescription'), Q = M.querySelector('.close-btn'); g.forEach(a => {
+                            let c =
+                                { x: 0, y: 0 }, d = !1, e = 0; const f = a => {
+                                    c.x = a.touches[0].clientX, c.y = a.touches[0].clientY, d =
+                                        !1, e = Date.now()
+                                }, g = a => {
+                                    if (!d) {
+                                        const b = Math.abs(a.touches[0].clientX - c.x), e =
+                                            Math.abs(a.touches[0].clientY - c.y); (b > 15 || e > 15) && (d = !0)
+                                    }
+                                }, h = f => {
+                                    if (b) {
+                                        const a =
+                                            Date.now() - e; if (d || a > 500) return
+                                    } f.preventDefault(), f.stopPropagation(); const g =
+                                        a.getAttribute('data-video'), h = a.getAttribute('data-line1'), i = a.getAttribute('data-line2'); N.src = g
+                                            + '?autoplay=1&title=0&byline=0&portrait=0', O.textContent = h, P.textContent = i,
+                                            M.classList.add('active'), b ? (document.body.style.position = 'fixed', document.body.style.top = `-${k}px`)
+                                                : document.body.style.overflow = 'hidden', B && cancelAnimationFrame(B)
+                                }; b ?
+                                    (a.addEventListener('touchstart', f, { passive: !0 }), a.addEventListener('touchmove', g, { passive: !0 }),
+                                        a.addEventListener('touchend', h, { passive: !1 })) : a.addEventListener('click', h)
+                        }); const R = () => {
+                            M.classList.remove('active'), N.src = '', b ? (document.body.style.position = '', document.body.style.top =
+                                '', document.body.style.overflow = 'hidden') : document.body.style.overflow = '', C()
+                        };
+            Q.addEventListener('click', R), M.addEventListener('click', a => { a.target === M && R() }),
+                window.addEventListener('keydown', a => { 'Escape' === a.key && M.classList.contains('active') && R() });
 
-            const initialTop = 1200;
-            let maxScroll = 2000; // se actualizará dinámicamente
-            let targetScroll = 0;
-            let currentScroll = 0;
-            const ease = 0.1;
+            // Animación de línea al hacer click en hamburguesa
+            const scrollStopLine = document.getElementById('scrollStopLine');
 
-            function updateTextEffect(scroll) {
-                const opacity = 1 - (scroll / maxScroll);
-                const translateY = -scroll * 0.1;
-
-                texto.style.opacity = opacity.toFixed(2);
-                texto.style.transform = `translateY(${translateY}px)`;
+            function triggerScrollStopAnimation() {
+                scrollStopLine.classList.remove('animate');
+                setTimeout(() => {
+                    scrollStopLine.classList.add('animate');
+                }, 10);
             }
 
-            function updateAboutOverlayPosition() {
-                const aboutOffset = initialTop + capa.offsetHeight;
-                aboutOverlay.style.top = `${aboutOffset - currentScroll}px`;
-            }
+            // Event listener ÚNICO para la hamburguesa con animación y funcionalidad
+            m.addEventListener('click', a => {
+                a.preventDefault();
+                a.stopPropagation();
+                if (!p) {
+                    // Disparar animación al hacer click
+                    triggerScrollStopAnimation();
 
-            function updateMaxScroll() {
-                const capaHeight = capa.offsetHeight;
-                const aboutHeight = aboutOverlay.offsetHeight;
-                const extraMargin = 100;
-
-                const totalContentHeight = initialTop + capaHeight + aboutHeight + extraMargin;
-                const viewportHeight = window.innerHeight;
-
-                maxScroll = Math.max(0, totalContentHeight - viewportHeight);
-
-                // Corrige el targetScroll si está fuera de límites
-                if (targetScroll > maxScroll) {
-                    targetScroll = maxScroll;
-                }
-            }
-
-            function smoothScroll() {
-                currentScroll += (targetScroll - currentScroll) * ease;
-                currentScroll = Math.min(Math.max(currentScroll, 0), maxScroll);
-
-                capa.style.top = `${initialTop - currentScroll}px`;
-
-                updateTextEffect(currentScroll);
-                updateAboutOverlayPosition();
-
-                requestAnimationFrame(smoothScroll);
-            }
-
-            function onWheel(e) {
-                targetScroll += e.deltaY;
-                targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
-                e.preventDefault();
-            }
-
-            let touchStartY = 0;
-            window.addEventListener('touchstart', (e) => {
-                if (e.touches.length === 1) {
-                    touchStartY = e.touches[0].clientY;
-                }
-            }, { passive: false });
-
-            window.addEventListener('touchmove', (e) => {
-                if (e.touches.length === 1) {
-                    const touchY = e.touches[0].clientY;
-                    const delta = touchStartY - touchY;
-                    targetScroll += delta;
-                    targetScroll = Math.min(Math.max(targetScroll, 0), maxScroll);
-                    touchStartY = touchY;
-                    e.preventDefault();
-                }
-            }, { passive: false });
-
-            window.addEventListener('wheel', onWheel, { passive: false });
-            capa.addEventListener('wheel', onWheel, { passive: false });
-
-            window.addEventListener('resize', () => {
-                updateMaxScroll();
-            });
-
-            botonesFiltro.forEach(boton => {
-                boton.addEventListener('click', () => {
-                    const filtro = boton.getAttribute('data-filtro');
-                    items.forEach(item => {
-                        const categoria = item.getAttribute('data-categoria');
-                        if (filtro === 'todos' || categoria === filtro) {
-                            item.classList.remove('hidden');
-                        } else {
-                            item.classList.add('hidden');
-                        }
-                    });
-
-                    // Espera a que se rendericen los cambios antes de calcular altura
-                    setTimeout(() => {
-                        updateMaxScroll();
-                    }, 50);
-                });
-            });
-
-            // Modal logic
-            const modal = document.getElementById('modal');
-            const iframe = modal.querySelector('iframe');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDescription = document.getElementById('modalDescription');
-            const closeBtn = modal.querySelector('.close-btn');
-
-            document.querySelectorAll('.item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const videoURL = item.getAttribute('data-video');
-                    const title = item.getAttribute('data-line1');
-                    const description = item.getAttribute('data-line2');
-                    iframe.src = videoURL + '?autoplay=1&title=0&byline=0&portrait=0';
-                    modalTitle.textContent = title;
-                    modalDescription.textContent = description;
-                    modal.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                });
-            });
-
-            closeBtn.addEventListener('click', () => {
-                modal.classList.remove('active');
-                iframe.src = '';
-                document.body.style.overflow = '';
-            });
-
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.remove('active');
-                    iframe.src = '';
-                    document.body.style.overflow = '';
-                }
-            });
-
-            window.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && modal.classList.contains('active')) {
-                    modal.classList.remove('active');
-                    iframe.src = '';
-                    document.body.style.overflow = '';
+                    // Funcionalidad original del menú
+                    m.classList.toggle('activo');
+                    n.classList.toggle('activo');
                 }
             });
 
-            updateMaxScroll();
-            smoothScroll();
+            document.querySelectorAll('.menu-horizontal a').forEach(a => {
+                a.addEventListener('click', function (b) {
+                    const c = this.getAttribute('href'); c &&
+                        c.startsWith('#') && (b.preventDefault(), t(c.substring(1)), m.classList.remove('activo'),
+                            n.classList.remove('activo'))
+                })
+            });
+
+            document.addEventListener('click', function (a) {
+                m.contains(a.target)
+                    || n.contains(a.target) || (m.classList.remove('activo'), n.classList.remove('activo'))
+            });
+
+            m.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            u();
+            window.addEventListener('hashchange', u);
+            window.addEventListener('resize', () => { y() });
+            y();
         });
     </script>
-
-
-
 </body>
+<div class="scroll-stop-line" id="scrollStopLine"></div>
 
 </html>
