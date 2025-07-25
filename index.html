@@ -744,14 +744,22 @@
             }
 
             function x() {
-                const a = h + c.offsetHeight, b = a - k;
-                e.style.top = `${Math.floor(b)}px`, e.style.display = 'block'
+                // FIX CRÍTICO: Calcular posición exacta sin gaps
+                const capaBlancaHeight = Math.floor(c.offsetHeight);
+                const aboutPosition = Math.floor(h + capaBlancaHeight - k);
+
+                e.style.top = `${aboutPosition}px`;
+                e.style.display = 'block';
+
+                // Asegurar que no haya gaps adicionales
+                e.style.transform = 'translateZ(0)';
+                e.style.backfaceVisibility = 'hidden';
             }
 
             function y() {
-                const a = c.offsetHeight, b = document.querySelector('.about-content');
+                const a = Math.floor(c.offsetHeight), b = document.querySelector('.about-content');
                 if (!b) return;
-                const d = window.innerHeight, f = b.offsetHeight, g = h + a + f;
+                const d = window.innerHeight, f = Math.floor(b.offsetHeight), g = h + a + f;
                 i = Math.max(0, g - d), j > i && (j = i)
             }
 
@@ -771,13 +779,17 @@
                     k += (j - k) * l;
                     k = Math.min(Math.max(k, 0), i);
 
-                    // FIX PRINCIPAL: Usar Math.floor para evitar sub-pixels
-                    const scrollPos = Math.floor(h - k);
+                    // FIX PRINCIPAL: Redondear todas las posiciones para evitar sub-pixels
+                    const scrollPos = Math.round(h - k);
                     c.style.top = `${scrollPos}px`;
 
-                    // Asegurar que no haya transforms adicionales que causen gaps
-                    c.style.transform = 'translateZ(0)'; // Force hardware acceleration
-                    c.style.backfaceVisibility = 'hidden'; // Prevent flicker
+                    // Asegurar hardware acceleration y prevenir flickering
+                    c.style.transform = 'translateZ(0)';
+                    c.style.backfaceVisibility = 'hidden';
+
+                    // Asegurar que la capa blanca tenga height exacto
+                    const capaHeight = Math.ceil(c.offsetHeight);
+                    c.style.minHeight = `${capaHeight}px`;
 
                     w(k);
                     x();
@@ -841,6 +853,18 @@
                 O = document.getElementById('modalTitle'), P = document.getElementById('modalDescription'),
                 Q = M.querySelector('.close-btn');
 
+            // Animación de línea al hacer click en hamburguesa y videos
+            const scrollStopLine = document.getElementById('scrollStopLine');
+
+            function triggerScrollStopAnimation() {
+                if (scrollStopLine) {
+                    scrollStopLine.classList.remove('animate');
+                    setTimeout(() => {
+                        scrollStopLine.classList.add('animate');
+                    }, 10);
+                }
+            }
+
             g.forEach(a => {
                 let c = { x: 0, y: 0 }, d = !1, e = 0;
                 const f = a => {
@@ -857,6 +881,10 @@
                         if (d || a > 500) return
                     }
                     f.preventDefault(), f.stopPropagation();
+
+                    // Disparar animación al hacer click en video
+                    triggerScrollStopAnimation();
+
                     const g = a.getAttribute('data-video'), h = a.getAttribute('data-line1'),
                         i = a.getAttribute('data-line2');
                     N.src = g + '?autoplay=1&title=0&byline=0&portrait=0', O.textContent = h,
@@ -877,18 +905,6 @@
 
             Q.addEventListener('click', R), M.addEventListener('click', a => { a.target === M && R() }),
                 window.addEventListener('keydown', a => { 'Escape' === a.key && M.classList.contains('active') && R() });
-
-            // Animación de línea al hacer click en hamburguesa
-            const scrollStopLine = document.getElementById('scrollStopLine');
-
-            function triggerScrollStopAnimation() {
-                scrollStopLine.classList.remove('animate');
-                setTimeout(() => {
-                    scrollStopLine.classList.add('animate');
-                }, 10);
-            }
-
-
 
             // Event listener ÚNICO para la hamburguesa con animación y funcionalidad
             m.addEventListener('click', a => {
