@@ -45,7 +45,8 @@
             background-position: center;
             background-repeat: no-repeat;
             z-index: -1;
-            filter: grayscale(100%);
+            /*             filter: grayscale(100%);
+ */
         }
 
         .capa-blanca {
@@ -577,9 +578,9 @@
     </div>
     <div class="capa-blanca" id="capaBlanca">
         <div class="filtros">
-            <button data-filtro="todos" class="activo">ALL</button>
-            <button data-filtro="director">PRODUCER</button>
-            <button data-filtro="productor">FILMMAKER</button>
+            <button data-filtro="todos" class="activo"># WOKS</button>
+            <!-- <button data-filtro="director">PRODUCER</button>
+            <button data-filtro="productor">FILMMAKER</button> -->
         </div>
         <div class="mosaico">
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
@@ -617,11 +618,11 @@
                     <span class="glitch">Sonora Teaser</span>
                 </div>
             </div>
-            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
                 data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
-                <img src="images/6.png" alt="Imagen 1" />
+                <img src="images/1.jpg" alt="Imagen 1" />
                 <div class="hover-title">
-                    <span class="glitch">Dewars</span>
+                    <span class="glitch">CUPRA Connect</span>
                 </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="productor"
@@ -643,6 +644,27 @@
                 <img src="images/7.png" alt="Imagen 1" />
                 <div class="hover-title">
                     <span class="glitch">Logic</span>
+                </div>
+            </div>
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
+                <img src="images/5.png" alt="Imagen 1" />
+                <div class="hover-title">
+                    <span class="glitch">Sonora Teaser</span>
+                </div>
+            </div>
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
+                <img src="images/4.png" alt="Imagen 1" />
+                <div class="hover-title">
+                    <span class="glitch">May Day and stage</span>
+                </div>
+            </div>
+            <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
+                <img src="images/3.png" alt="Imagen 3" />
+                <div class="hover-title">
+                    <span class="glitch">Inconformistas</span>
                 </div>
             </div>
         </div>
@@ -676,118 +698,183 @@
         </div>
     </div>
     <script>
-
         document.addEventListener('DOMContentLoaded', () => {
             const a = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1), b =
                     /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || a, c = document.getElementById('capaBlanca'), d =
                     document.getElementById('capaTexto').querySelector('h2'), e = document.querySelector('.about-overlay'), f =
-                    document.querySelectorAll('.filtros button'), g = document.querySelectorAll('.mosaico .item'), h = 1200; let i = 0,
+                    document.querySelectorAll('.filtros button'), g = document.querySelectorAll('.mosaico .item'), h = 1100; let i = 0,
                         j = 0, k = 0; const l = 0.1, m = document.getElementById('hamburguesa'), n =
-                            document.getElementById('menuHorizontal'); let o, p = !1, q = 0, r = 0, s = !0; b && (document.body.style.overflow =
-                                'hidden', document.body.style.position = 'fixed', document.body.style.width = '100%', document.body.style.height =
-                                '100%', document.documentElement.style.overflow = 'hidden'); function t(a) {
-                                    let b = 0; 'works' === a ? b = h :
-                                        'about' === a && (b = h + c.offsetHeight), b = Math.min(Math.max(b, 0), i), j = b
-                                } function u() {
-                                    if (s) {
-                                        if
-                                            (window.location.hash) {
-                                            const a = window.location.pathname + window.location.search; history.replaceState(null, '',
-                                                a)
-                                        } return s = !1, void 0
-                                    } const a = window.location.hash; a && setTimeout(() => { t(a.substring(1)) }, 100)
-                                }
-            function v() {
-                const a = Date.now(); if (a - r < 500) return; const b = k / i; let c = ''; b < 0.1 ? c = '' : b < 0.7 ? c = '#works' :
-                    c = '#about'; const d = window.location.hash; if (d !== c) {
-                        const a = window.location.pathname +
-                            window.location.search + c; history.replaceState(null, '', a), r = a
+                            document.getElementById('menuHorizontal'); let o, p = !1, q = 0, r = 0, s = !0;
+
+            b && (document.body.style.overflow = 'hidden', document.body.style.position = 'fixed',
+                document.body.style.width = '100%', document.body.style.height = '100%',
+                document.documentElement.style.overflow = 'hidden');
+
+            function t(a) {
+                let b = 0; 'works' === a ? b = h : 'about' === a && (b = h + c.offsetHeight),
+                    b = Math.min(Math.max(b, 0), i), j = b
+            }
+
+            function u() {
+                if (s) {
+                    if (window.location.hash) {
+                        const a = window.location.pathname + window.location.search;
+                        history.replaceState(null, '', a)
                     }
-            } function w(a) {
-                const b = Math.max(0, 1 -
-                    a / i), c = -a * 0.1; d.style.opacity = b, d.style.transform = `translateY(${c}px)`
-            } function x() {
-                const a = h +
-                    c.offsetHeight, b = a - k; e.style.top = `${b}px`, e.style.display = 'block'
-            } function y() {
-                const a = c.offsetHeight,
-                    b = document.querySelector('.about-content'); if (!b) return; const d = window.innerHeight, f = b.offsetHeight, g = h +
-                        a + f; i = Math.max(0, g - d), j > i && (j = i)
-            } function A() {
-                const a = Math.abs(k - q); a > 5 && (p || (p = !0, n.classList.contains('activo') &&
-                    (m.classList.remove('activo'), n.classList.remove('activo')), m.style.opacity = '0', m.style.pointerEvents =
-                    'none'), clearTimeout(o), o = setTimeout(() => {
-                        p = !1, m.style.opacity = '1', m.style.pointerEvents =
-                            'auto'
+                    return s = !1, void 0
+                }
+                const a = window.location.hash;
+                a && setTimeout(() => { t(a.substring(1)) }, 100)
+            }
+
+            function v() {
+                const a = Date.now(); if (a - r < 500) return; const b = k / i; let c = '';
+                b < 0.1 ? c = '' : b < 0.7 ? c = '#works' : c = '#about';
+                const d = window.location.hash;
+                if (d !== c) {
+                    const a = window.location.pathname + window.location.search + c;
+                    history.replaceState(null, '', a), r = a
+                }
+            }
+
+            function w(a) {
+                const b = Math.max(0, 1 - a / i), c = -a * 0.1;
+                d.style.opacity = b, d.style.transform = `translateY(${c}px)`
+            }
+
+            function x() {
+                const a = h + c.offsetHeight, b = a - k;
+                e.style.top = `${Math.floor(b)}px`, e.style.display = 'block'
+            }
+
+            function y() {
+                const a = c.offsetHeight, b = document.querySelector('.about-content');
+                if (!b) return;
+                const d = window.innerHeight, f = b.offsetHeight, g = h + a + f;
+                i = Math.max(0, g - d), j > i && (j = i)
+            }
+
+            function A() {
+                const a = Math.abs(k - q);
+                a > 5 && (p || (p = !0, n.classList.contains('activo') &&
+                    (m.classList.remove('activo'), n.classList.remove('activo')),
+                    m.style.opacity = '0', m.style.pointerEvents = 'none'),
+                    clearTimeout(o), o = setTimeout(() => {
+                        p = !1, m.style.opacity = '1', m.style.pointerEvents = 'auto'
                     }, 150)), q = k
-            } let B; function C() {
-                Math.abs(j - k) > 0.1 && (k += (j - k) * l, k =
-                    Math.min(Math.max(k, 0), i), c.style.top = `${h - k}px`, w(k), x(), v(), A()), B = requestAnimationFrame(C)
-            } function D(a) {
-                a.preventDefault(); const b = a.deltaY || a.detail || a.wheelDelta; j += b, j =
-                    Math.min(Math.max(j, 0), i)
-            } let E = 0, F = 0, G = !1, H = 0, I = 0, J = 0, K = !1; function L(a) {
-                a.preventDefault(), a.stopPropagation(); return !1
-            } b ? (document.addEventListener('touchmove', L, {
-                passive: !1
-            }), document.addEventListener('touchforcechange', L, { passive: !1 }),
-                document.addEventListener('wheel', L, { passive: !1 }), document.addEventListener('scroll', L, {
-                    passive: !1
-                }), document.addEventListener('touchstart', a => {
-                    1 === a.touches.length && (E = a.touches[0].clientY, F =
-                        a.touches[0].clientX, I = E, H = Date.now(), J = 0, K = !0, G = !1)
+            }
+
+            let B;
+            function C() {
+                if (Math.abs(j - k) > 0.1) {
+                    k += (j - k) * l;
+                    k = Math.min(Math.max(k, 0), i);
+
+                    // FIX PRINCIPAL: Usar Math.floor para evitar sub-pixels
+                    const scrollPos = Math.floor(h - k);
+                    c.style.top = `${scrollPos}px`;
+
+                    // Asegurar que no haya transforms adicionales que causen gaps
+                    c.style.transform = 'translateZ(0)'; // Force hardware acceleration
+                    c.style.backfaceVisibility = 'hidden'; // Prevent flicker
+
+                    w(k);
+                    x();
+                    v();
+                    A();
+                }
+                B = requestAnimationFrame(C);
+            }
+
+            function D(a) {
+                a.preventDefault();
+                const b = a.deltaY || a.detail || a.wheelDelta;
+                j += b, j = Math.min(Math.max(j, 0), i)
+            }
+
+            let E = 0, F = 0, G = !1, H = 0, I = 0, J = 0, K = !1;
+
+            function L(a) {
+                a.preventDefault(), a.stopPropagation();
+                return !1
+            }
+
+            b ? (document.addEventListener('touchmove', L, { passive: !1 }),
+                document.addEventListener('touchforcechange', L, { passive: !1 }),
+                document.addEventListener('wheel', L, { passive: !1 }),
+                document.addEventListener('scroll', L, { passive: !1 }),
+                document.addEventListener('touchstart', a => {
+                    1 === a.touches.length && (E = a.touches[0].clientY, F = a.touches[0].clientX,
+                        I = E, H = Date.now(), J = 0, K = !0, G = !1)
                 }, { passive: !0 }),
                 document.addEventListener('touchmove', a => {
                     if (1 === a.touches.length && K) {
-                        const b =
-                            a.touches[0].clientY, c = a.touches[0].clientX, d = Math.abs(b - E), e = Math.abs(c - F); !G && (d > 10 || e
-                                > 10) && (G = d > e), G && (a.preventDefault(), a.stopPropagation()); const f = Date.now(), g = f - H; if (g
-                                    > 0) { const a = I - b; J = a / g, j += 3 * a, j = Math.min(Math.max(j, 0), i), I = b, H = f }
+                        const b = a.touches[0].clientY, c = a.touches[0].clientX,
+                            d = Math.abs(b - E), e = Math.abs(c - F);
+                        !G && (d > 10 || e > 10) && (G = d > e), G && (a.preventDefault(), a.stopPropagation());
+                        const f = Date.now(), g = f - H;
+                        if (g > 0) {
+                            const a = I - b; J = a / g, j += 3 * a,
+                                j = Math.min(Math.max(j, 0), i), I = b, H = f
+                        }
                     }
-                }, {
-                    passive: !1
-                }), document.addEventListener('touchend', a => {
-                    K && G && Math.abs(J) > 0.5 && (j += 200 * J, j
-                        = Math.min(Math.max(j, 0), i)), K = !1, G = !1
-                }, { passive: !0 }), C()) : (window.addEventListener('wheel',
-                    D, { passive: !1 }), C()), f.forEach(a => {
-                        a.addEventListener('click', b => {
-                            b.preventDefault(); const c =
-                                a.getAttribute('data-filtro'); f.forEach(a => a.classList.remove('activo')), a.classList.add('activo'),
-                                    g.forEach(a => {
-                                        const b = a.getAttribute('data-categoria'); 'todos' === c || b === c ?
-                                            a.classList.remove('hidden') : a.classList.add('hidden')
-                                    }), setTimeout(() => { y() }, 100)
-                        })
-                    }); const M =
-                        document.getElementById('modal'), N = M.querySelector('iframe'), O = document.getElementById('modalTitle'),
-                        P = document.getElementById('modalDescription'), Q = M.querySelector('.close-btn'); g.forEach(a => {
-                            let c =
-                                { x: 0, y: 0 }, d = !1, e = 0; const f = a => {
-                                    c.x = a.touches[0].clientX, c.y = a.touches[0].clientY, d =
-                                        !1, e = Date.now()
-                                }, g = a => {
-                                    if (!d) {
-                                        const b = Math.abs(a.touches[0].clientX - c.x), e =
-                                            Math.abs(a.touches[0].clientY - c.y); (b > 15 || e > 15) && (d = !0)
-                                    }
-                                }, h = f => {
-                                    if (b) {
-                                        const a =
-                                            Date.now() - e; if (d || a > 500) return
-                                    } f.preventDefault(), f.stopPropagation(); const g =
-                                        a.getAttribute('data-video'), h = a.getAttribute('data-line1'), i = a.getAttribute('data-line2'); N.src = g
-                                            + '?autoplay=1&title=0&byline=0&portrait=0', O.textContent = h, P.textContent = i,
-                                            M.classList.add('active'), b ? (document.body.style.position = 'fixed', document.body.style.top = `-${k}px`)
-                                                : document.body.style.overflow = 'hidden', B && cancelAnimationFrame(B)
-                                }; b ?
-                                    (a.addEventListener('touchstart', f, { passive: !0 }), a.addEventListener('touchmove', g, { passive: !0 }),
-                                        a.addEventListener('touchend', h, { passive: !1 })) : a.addEventListener('click', h)
-                        }); const R = () => {
-                            M.classList.remove('active'), N.src = '', b ? (document.body.style.position = '', document.body.style.top =
-                                '', document.body.style.overflow = 'hidden') : document.body.style.overflow = '', C()
-                        };
+                }, { passive: !1 }),
+                document.addEventListener('touchend', a => {
+                    K && G && Math.abs(J) > 0.5 && (j += 200 * J, j = Math.min(Math.max(j, 0), i)),
+                        K = !1, G = !1
+                }, { passive: !0 }), C()) : (window.addEventListener('wheel', D, { passive: !1 }), C());
+
+            f.forEach(a => {
+                a.addEventListener('click', b => {
+                    b.preventDefault();
+                    const c = a.getAttribute('data-filtro');
+                    f.forEach(a => a.classList.remove('activo')), a.classList.add('activo'),
+                        g.forEach(a => {
+                            const b = a.getAttribute('data-categoria');
+                            'todos' === c || b === c ? a.classList.remove('hidden') : a.classList.add('hidden')
+                        }), setTimeout(() => { y() }, 100)
+                })
+            });
+
+            const M = document.getElementById('modal'), N = M.querySelector('iframe'),
+                O = document.getElementById('modalTitle'), P = document.getElementById('modalDescription'),
+                Q = M.querySelector('.close-btn');
+
+            g.forEach(a => {
+                let c = { x: 0, y: 0 }, d = !1, e = 0;
+                const f = a => {
+                    c.x = a.touches[0].clientX, c.y = a.touches[0].clientY, d = !1, e = Date.now()
+                }, g = a => {
+                    if (!d) {
+                        const b = Math.abs(a.touches[0].clientX - c.x),
+                            e = Math.abs(a.touches[0].clientY - c.y);
+                        (b > 15 || e > 15) && (d = !0)
+                    }
+                }, h = f => {
+                    if (b) {
+                        const a = Date.now() - e;
+                        if (d || a > 500) return
+                    }
+                    f.preventDefault(), f.stopPropagation();
+                    const g = a.getAttribute('data-video'), h = a.getAttribute('data-line1'),
+                        i = a.getAttribute('data-line2');
+                    N.src = g + '?autoplay=1&title=0&byline=0&portrait=0', O.textContent = h,
+                        P.textContent = i, M.classList.add('active'),
+                        b ? (document.body.style.position = 'fixed', document.body.style.top = `-${k}px`) :
+                            document.body.style.overflow = 'hidden', B && cancelAnimationFrame(B)
+                };
+                b ? (a.addEventListener('touchstart', f, { passive: !0 }),
+                    a.addEventListener('touchmove', g, { passive: !0 }),
+                    a.addEventListener('touchend', h, { passive: !1 })) : a.addEventListener('click', h)
+            });
+
+            const R = () => {
+                M.classList.remove('active'), N.src = '',
+                    b ? (document.body.style.position = '', document.body.style.top = '',
+                        document.body.style.overflow = 'hidden') : document.body.style.overflow = '', C()
+            };
+
             Q.addEventListener('click', R), M.addEventListener('click', a => { a.target === M && R() }),
                 window.addEventListener('keydown', a => { 'Escape' === a.key && M.classList.contains('active') && R() });
 
@@ -800,6 +887,8 @@
                     scrollStopLine.classList.add('animate');
                 }, 10);
             }
+
+
 
             // Event listener ÚNICO para la hamburguesa con animación y funcionalidad
             m.addEventListener('click', a => {
@@ -817,15 +906,15 @@
 
             document.querySelectorAll('.menu-horizontal a').forEach(a => {
                 a.addEventListener('click', function (b) {
-                    const c = this.getAttribute('href'); c &&
-                        c.startsWith('#') && (b.preventDefault(), t(c.substring(1)), m.classList.remove('activo'),
-                            n.classList.remove('activo'))
+                    const c = this.getAttribute('href');
+                    c && c.startsWith('#') && (b.preventDefault(), t(c.substring(1)),
+                        m.classList.remove('activo'), n.classList.remove('activo'))
                 })
             });
 
             document.addEventListener('click', function (a) {
-                m.contains(a.target)
-                    || n.contains(a.target) || (m.classList.remove('activo'), n.classList.remove('activo'))
+                m.contains(a.target) || n.contains(a.target) ||
+                    (m.classList.remove('activo'), n.classList.remove('activo'))
             });
 
             m.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
