@@ -303,8 +303,6 @@
                 flex: 1 1 calc(50% - 10px);
                 max-width: calc(50% - 10px);
             }
-
-
         }
 
         @media (max-width: 700px) {
@@ -592,90 +590,90 @@
     </div>
     <div class="capa-blanca" id="capaBlanca">
         <div class="filtros">
-            <button data-filtro="todos" class="activo"># WORKS</button>
+            <button data-filtro="todos" class="activo"># WOKS</button>
             <!-- <button data-filtro="director">PRODUCER</button>
             <button data-filtro="productor">FILMMAKER</button> -->
         </div>
         <div class="mosaico">
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
-                data-line1="LAVISUAL" data-line2="PRODUCCION EJECUTIVA">
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="images/1.jpg" alt="Imagen 1" />
                 <div class="hover-title">
                     <span class="glitch">CUPRA Connect</span>
                 </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="productor"
-                data-line1="LAVISUAL" data-line2="PRODUCCION EJECUTIVA">
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="images/2b.png" alt="Imagen 2" />
                 <div class="hover-title">
                     <span class="glitch">House of talents</span>
                 </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
-                data-line1="LAVISUAL" data-line2="PRODUCCION EJECUTIVA">
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="images/3.png" alt="Imagen 3" />
                 <div class="hover-title">
                     <span class="glitch">Inconformistas</span>
                 </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
-                data-line1="LAVISUAL" data-line2="PRODUCCION EJECUTIVA">
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="images/4.png" alt="Imagen 1" />
                 <div class="hover-title">
                     <span class="glitch">May Day and stage</span>
                 </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
-                data-line1="LAVISUAL" data-line2="PRODUCCION EJECUTIVA">
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="images/5.png" alt="Imagen 1" />
                 <div class="hover-title">
                     <span class="glitch">Sonora Teaser</span>
                 </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
-                data-line1="LAVISUAL" data-line2="PRODUCCION EJECUTIVA">
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="images/1.jpg" alt="Imagen 1" />
                 <div class="hover-title">
                     <span class="glitch">CUPRA Connect</span>
                 </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="productor"
-                data-line1="LAVISUAL" data-line2="PRODUCCION EJECUTIVA">
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="images/9.png" alt="Imagen 1" />
                 <div class="hover-title">
                     <span class="glitch">Martini</span>
                 </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
-                data-line1="LAVISUAL" data-line2="PRODUCCION EJECUTIVA">
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="images/8.png" alt="Imagen 1" />
                 <div class="hover-title">
                     <span class="glitch">Font Vella</span>
                 </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
-                data-line1="LAVISUAL" data-line2="PRODUCCION EJECUTIVA">
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="images/7.png" alt="Imagen 1" />
                 <div class="hover-title">
                     <span class="glitch">Logic</span>
                 </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
-                data-line1="LAVISUAL" data-line2="PRODUCCION EJECUTIVA">
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="images/5.png" alt="Imagen 1" />
                 <div class="hover-title">
                     <span class="glitch">Sonora Teaser</span>
                 </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="director"
-                data-line1="LAVISUAL" data-line2="PRODUCCION EJECUTIVA">
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="images/4.png" alt="Imagen 1" />
                 <div class="hover-title">
                     <span class="glitch">May Day and stage</span>
                 </div>
             </div>
             <div class="item" data-video="https://player.vimeo.com/video/915899060" data-categoria="camara"
-                data-line1="LAVISUAL" data-line2="PRODUCCION EJECUTIVA">
+                data-line1="LA VISUAL" data-line2="PRODUCCION EJECUTIVA">
                 <img src="images/3.png" alt="Imagen 3" />
                 <div class="hover-title">
                     <span class="glitch">Inconformistas</span>
@@ -758,14 +756,22 @@
             }
 
             function x() {
-                const a = h + c.offsetHeight, b = a - k;
-                e.style.top = `${Math.floor(b)}px`, e.style.display = 'block'
+                // FIX CRÍTICO: Calcular posición exacta sin gaps
+                const capaBlancaHeight = Math.floor(c.offsetHeight);
+                const aboutPosition = Math.floor(h + capaBlancaHeight - k);
+
+                e.style.top = `${aboutPosition}px`;
+                e.style.display = 'block';
+
+                // Asegurar que no haya gaps adicionales
+                e.style.transform = 'translateZ(0)';
+                e.style.backfaceVisibility = 'hidden';
             }
 
             function y() {
-                const a = c.offsetHeight, b = document.querySelector('.about-content');
+                const a = Math.floor(c.offsetHeight), b = document.querySelector('.about-content');
                 if (!b) return;
-                const d = window.innerHeight, f = b.offsetHeight, g = h + a + f;
+                const d = window.innerHeight, f = Math.floor(b.offsetHeight), g = h + a + f;
                 i = Math.max(0, g - d), j > i && (j = i)
             }
 
@@ -785,13 +791,17 @@
                     k += (j - k) * l;
                     k = Math.min(Math.max(k, 0), i);
 
-                    // FIX PRINCIPAL: Usar Math.floor para evitar sub-pixels
-                    const scrollPos = Math.floor(h - k);
+                    // FIX PRINCIPAL: Redondear todas las posiciones para evitar sub-pixels
+                    const scrollPos = Math.round(h - k);
                     c.style.top = `${scrollPos}px`;
 
-                    // Asegurar que no haya transforms adicionales que causen gaps
-                    c.style.transform = 'translateZ(0)'; // Force hardware acceleration
-                    c.style.backfaceVisibility = 'hidden'; // Prevent flicker
+                    // Asegurar hardware acceleration y prevenir flickering
+                    c.style.transform = 'translateZ(0)';
+                    c.style.backfaceVisibility = 'hidden';
+
+                    // Asegurar que la capa blanca tenga height exacto
+                    const capaHeight = Math.ceil(c.offsetHeight);
+                    c.style.minHeight = `${capaHeight}px`;
 
                     w(k);
                     x();
@@ -855,6 +865,18 @@
                 O = document.getElementById('modalTitle'), P = document.getElementById('modalDescription'),
                 Q = M.querySelector('.close-btn');
 
+            // Animación de línea al hacer click en hamburguesa y videos
+            const scrollStopLine = document.getElementById('scrollStopLine');
+
+            function triggerScrollStopAnimation() {
+                if (scrollStopLine) {
+                    scrollStopLine.classList.remove('animate');
+                    setTimeout(() => {
+                        scrollStopLine.classList.add('animate');
+                    }, 10);
+                }
+            }
+
             g.forEach(a => {
                 let c = { x: 0, y: 0 }, d = !1, e = 0;
                 const f = a => {
@@ -871,6 +893,10 @@
                         if (d || a > 500) return
                     }
                     f.preventDefault(), f.stopPropagation();
+
+                    // Disparar animación al hacer click en video
+                    triggerScrollStopAnimation();
+
                     const g = a.getAttribute('data-video'), h = a.getAttribute('data-line1'),
                         i = a.getAttribute('data-line2');
                     N.src = g + '?autoplay=1&title=0&byline=0&portrait=0', O.textContent = h,
@@ -891,16 +917,6 @@
 
             Q.addEventListener('click', R), M.addEventListener('click', a => { a.target === M && R() }),
                 window.addEventListener('keydown', a => { 'Escape' === a.key && M.classList.contains('active') && R() });
-
-            // Animación de línea al hacer click en hamburguesa
-            const scrollStopLine = document.getElementById('scrollStopLine');
-
-            function triggerScrollStopAnimation() {
-                scrollStopLine.classList.remove('animate');
-                setTimeout(() => {
-                    scrollStopLine.classList.add('animate');
-                }, 10);
-            }
 
             // Event listener ÚNICO para la hamburguesa con animación y funcionalidad
             m.addEventListener('click', a => {
